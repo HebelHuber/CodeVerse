@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace CodeVerse.SimulatorTester
 {
@@ -9,7 +10,12 @@ namespace CodeVerse.SimulatorTester
             Console.WriteLine("Hello World!");
             var sim = new Simulator.Simulator();
             sim.GetNewMap();
-            sim.Simulate();
+
+            while(true)
+            {
+                sim.Simulate();
+                Thread.Sleep(500);
+            }
         }
     }
 }
