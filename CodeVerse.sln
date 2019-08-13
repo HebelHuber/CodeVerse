@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.Server", "CodeVer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeVerse.Simulator", "CodeVerse.Simulator\CodeVerse.Simulator.csproj", "{5C48793E-267A-4AD5-B1EC-4E5750D6A0D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeVerse.Common", "CodeVerse.Common\CodeVerse.Common.csproj", "{3E9E62E4-EAB6-48A5-8476-F93FC97E1F1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5C48793E-267A-4AD5-B1EC-4E5750D6A0D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C48793E-267A-4AD5-B1EC-4E5750D6A0D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C48793E-267A-4AD5-B1EC-4E5750D6A0D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E9E62E4-EAB6-48A5-8476-F93FC97E1F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E9E62E4-EAB6-48A5-8476-F93FC97E1F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E9E62E4-EAB6-48A5-8476-F93FC97E1F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E9E62E4-EAB6-48A5-8476-F93FC97E1F1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
