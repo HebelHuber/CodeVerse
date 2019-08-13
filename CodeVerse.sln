@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.Server", "CodeVerse.Server\CodeVerse.Server.csproj", "{B4947E58-11AD-46E8-BC43-3919750EEDAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeVerse.Simulator", "CodeVerse.Simulator\CodeVerse.Simulator.csproj", "{5C48793E-267A-4AD5-B1EC-4E5750D6A0D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.Simulator", "CodeVerse.Simulator\CodeVerse.Simulator.csproj", "{5C48793E-267A-4AD5-B1EC-4E5750D6A0D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeVerse.Common", "CodeVerse.Common\CodeVerse.Common.csproj", "{3E9E62E4-EAB6-48A5-8476-F93FC97E1F1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.Common", "CodeVerse.Common\CodeVerse.Common.csproj", "{3E9E62E4-EAB6-48A5-8476-F93FC97E1F1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeVerse.ClientConnector", "CodeVerse.ClientConnector\CodeVerse.ClientConnector.csproj", "{C9BEC013-EB8D-4F2A-85C8-3AA83E0C7830}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{3E9E62E4-EAB6-48A5-8476-F93FC97E1F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E9E62E4-EAB6-48A5-8476-F93FC97E1F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E9E62E4-EAB6-48A5-8476-F93FC97E1F1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9BEC013-EB8D-4F2A-85C8-3AA83E0C7830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9BEC013-EB8D-4F2A-85C8-3AA83E0C7830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9BEC013-EB8D-4F2A-85C8-3AA83E0C7830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9BEC013-EB8D-4F2A-85C8-3AA83E0C7830}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
