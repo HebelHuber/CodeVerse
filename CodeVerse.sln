@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.Common", "CodeVer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.ClientConnector", "CodeVerse.ClientConnector\CodeVerse.ClientConnector.csproj", "{C9BEC013-EB8D-4F2A-85C8-3AA83E0C7830}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeVerse.Simulator", "CodeVerse.Simulator\CodeVerse.Simulator.csproj", "{10CEC36A-3BFA-4951-BE45-222ADBC84E84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.Simulator", "CodeVerse.Simulator\CodeVerse.Simulator.csproj", "{10CEC36A-3BFA-4951-BE45-222ADBC84E84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeVerse.SimulatorTester", "CodeVerse.SimulatorTester\CodeVerse.SimulatorTester.csproj", "{A4129608-0458-41A0-8A19-5DE211BD43F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.SimulatorTester", "CodeVerse.SimulatorTester\CodeVerse.SimulatorTester.csproj", "{A4129608-0458-41A0-8A19-5DE211BD43F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeVerse.ClientConnectorTester", "CodeVerse.ClientConnectorTester\CodeVerse.ClientConnectorTester.csproj", "{98C5E3BB-4FBB-42DC-A967-D0320BB9B3FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A4129608-0458-41A0-8A19-5DE211BD43F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4129608-0458-41A0-8A19-5DE211BD43F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4129608-0458-41A0-8A19-5DE211BD43F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98C5E3BB-4FBB-42DC-A967-D0320BB9B3FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98C5E3BB-4FBB-42DC-A967-D0320BB9B3FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98C5E3BB-4FBB-42DC-A967-D0320BB9B3FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98C5E3BB-4FBB-42DC-A967-D0320BB9B3FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

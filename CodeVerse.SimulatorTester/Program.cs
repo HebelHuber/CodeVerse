@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CodeVerse.Common;
+using CodeVerse.Simulator;
+using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace CodeVerse.SimulatorTester
@@ -7,15 +10,21 @@ namespace CodeVerse.SimulatorTester
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            var sim = new Simulator.Simulator();
-            sim.GetNewMap();
+            var sim = new DefaultSimulator();
+            var ents = sim.GenerateMap();
 
-            while(true)
+            foreach (var item in ents)
             {
-                sim.Simulate();
-                Thread.Sleep(500);
+                Console.WriteLine(item.ToStringWithProps());
             }
+
+            //while (true)
+            //{
+            //var output = sim.Simulate(new List<Entity>());
+            //Thread.Sleep(500);
+            //}
+
+            Thread.Sleep(-1);
         }
     }
 }

@@ -3,7 +3,7 @@ using CodeVerse.Common;
 
 namespace CodeVerse.ClientConnector
 {
-    public class Class1
+    public class ClientConnector
     {
     }
 }
