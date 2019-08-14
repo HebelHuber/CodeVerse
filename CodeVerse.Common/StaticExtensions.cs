@@ -67,10 +67,17 @@ namespace CodeVerse.Common
 
         public static string ToFixedLengthString(this float val, int length)
         {
-            string digitString = "N" + length.ToString();
-            return val.ToString(digitString);
-            //return String.Format("{0:00000}", val);
-            //return val.ToString("000:00000");
+            // sehr sehr ekelige sache hier
+            // Pfui Lukas! Pfui!
+
+            string outstring = "N" + length.ToString();
+            outstring = val.ToString(outstring);
+
+            if (val < 10) outstring = "000" + outstring;
+            else if (val < 100) outstring = "00" + outstring;
+            else if (val < 1000) outstring = "0" + outstring;
+
+            return outstring;
         }
 
         public static string ToFixedLengthString(this double val, int length)
