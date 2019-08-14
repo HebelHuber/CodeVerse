@@ -11,8 +11,14 @@ namespace CodeVerse.LogicTester
         static void Main(string[] args)
         {
             var sim = new DefaultSimulator();
-            var ents = sim.GenerateMap();
+            PrintEntities(sim.GenerateMap());
 
+            //Thread.Sleep(-1);
+            Console.ReadKey(true);
+        }
+
+        private static void PrintEntities(List<Entity> ents)
+        {
             foreach (var item in ents)
             {
                 if (item is Sun)
@@ -29,14 +35,6 @@ namespace CodeVerse.LogicTester
                 Console.WriteLine(item.ToStringWithProps());
                 Console.ResetColor();
             }
-
-            //while (true)
-            //{
-            //var output = sim.Simulate(new List<Entity>());
-            //Thread.Sleep(500);
-            //}
-
-            Thread.Sleep(-1);
         }
     }
 }
