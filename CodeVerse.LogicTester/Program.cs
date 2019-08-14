@@ -11,7 +11,8 @@ namespace CodeVerse.LogicTester
         static void Main(string[] args)
         {
             var sim = new DefaultSimulator();
-            PrintEntities(sim.GenerateMap());
+
+            PrintEntities(sim.GenerateMap(123));
 
             //Thread.Sleep(-1);
             Console.ReadKey(true);

@@ -80,15 +80,24 @@ namespace CodeVerse.Common
 
         private static Random random = null;
 
+        public static void SetRandomSeed(int seed)
+        {
+            random = new Random(seed);
+        }
+
         public static float randomNormalizedFloat
         {
             get
             {
-                if (random == null) random = new Random();
+                if (random == null)
+                    throw new Exception("Random not initialized." +
+                    "Use StaticExtensions.SetRandomSeed() to set a seed.");
+
                 return Convert.ToSingle(random.NextDouble());
             }
         }
 
+        /*
         public static int GetRandomWeightedIndex(params float[] weights)
         {
             if (random == null) random = new Random();
@@ -117,5 +126,6 @@ namespace CodeVerse.Common
 
             return -1;
         }
+        */
     }
 }

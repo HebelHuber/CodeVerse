@@ -7,7 +7,7 @@ namespace CodeVerse.Logic
 {
     public interface ICanSimulate
     {
-        public List<Entity> GenerateMap();
+        public List<Entity> GenerateMap(int seed);
 
         public List<Entity> Simulate(List<PlayerCommand> input);
 

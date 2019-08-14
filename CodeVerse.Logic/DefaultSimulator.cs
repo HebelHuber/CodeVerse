@@ -9,10 +9,14 @@ namespace CodeVerse.Logic
     {
         private List<Entity> entities;
 
-        public List<Entity> GenerateMap()
+        public List<Entity> GenerateMap(int seed = 0)
         {
-            entities = new List<Entity>();
+            if (seed == 0)
+                seed = new Random().Next(int.MaxValue);
 
+            StaticExtensions.SetRandomSeed(seed);
+
+            entities = new List<Entity>();
 
             // generate a random map of static objects
 
