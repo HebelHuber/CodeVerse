@@ -15,17 +15,46 @@ namespace CodeVerse.Simulator
             entities = new List<Entity>();
 
             // generate a random map of static objects
+            for (int i = 0; i < 5; i++)
+                entities.Add(RandomSun("Sun_" + i));
+
+            for (int i = 0; i < 10; i++)
+                entities.Add(RandomPlanet("Planet_" + i));
+
             for (int i = 0; i < 20; i++)
-            {
-                var newObj = new StaticEntity();
-                newObj.pos = new Vector(randomNormalizedFloat * 50f, randomNormalizedFloat * 50f);
-                newObj.name = "looool";
-                newObj.radius = randomNormalizedFloat * 20f;
-                newObj.Gravity = randomNormalizedFloat * 5f;
-                entities.Add(newObj);
-            }
+                entities.Add(RandomMoon("Moon_" + i));
 
             return entities;
+        }
+
+        private Sun RandomSun(string name)
+        {
+            var newObj = new Sun();
+            newObj.pos = new Vector(randomNormalizedFloat * 50f, randomNormalizedFloat * 50f);
+            newObj.name = name;
+            newObj.radius = randomNormalizedFloat * 20f;
+            newObj.Gravity = randomNormalizedFloat * 10f;
+            return newObj;
+        }
+
+        private Planet RandomPlanet(string name)
+        {
+            var newObj = new Planet();
+            newObj.pos = new Vector(randomNormalizedFloat * 50f, randomNormalizedFloat * 50f);
+            newObj.name = name;
+            newObj.radius = randomNormalizedFloat * 20f;
+            newObj.Gravity = randomNormalizedFloat * 1f;
+            return newObj;
+        }
+
+        private Moon RandomMoon(string name)
+        {
+            var newObj = new Moon();
+            newObj.pos = new Vector(randomNormalizedFloat * 50f, randomNormalizedFloat * 50f);
+            newObj.name = name;
+            newObj.radius = randomNormalizedFloat * 20f;
+            newObj.Gravity = 0f;
+            return newObj;
         }
 
         public List<Entity> Simulate(List<Entity> input)
