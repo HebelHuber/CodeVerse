@@ -2,7 +2,7 @@
 
 namespace CodeVerse.Common
 {
-    public class Entity
+    public abstract class Entity
     {
         public string name;
         public float radius;

@@ -1,6 +1,6 @@
 ﻿namespace CodeVerse.Common
 {
-    public class StaticEntity : Entity
+    public abstract class StaticEntity : Entity
     {
         public float Gravity;
     }

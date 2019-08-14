@@ -1,10 +1,10 @@
 ﻿using CodeVerse.Common;
-using CodeVerse.Simulator;
+using CodeVerse.Logic;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace CodeVerse.SimulatorTester
+namespace CodeVerse.LogicTester
 {
     class Program
     {

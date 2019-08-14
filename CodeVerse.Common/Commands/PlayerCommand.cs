@@ -4,9 +4,7 @@ using System.Text;
 
 namespace CodeVerse.Common
 {
-    public abstract class MovingEntity : Entity
+    public class PlayerCommand
     {
-        public Vector Velocity;
-        public float Weight;
     }
 }

@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CodeVerse.Common\CodeVerse.Common.csproj" />
-    <ProjectReference Include="..\CodeVerse.Simulator\CodeVerse.Simulator.csproj" />
   </ItemGroup>
 
 </Project>

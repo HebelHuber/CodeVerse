@@ -58,7 +58,7 @@ namespace CodeVerse.Common
             return v.Angle - this.Angle;
         }
 
-        public override string ToString() { return "[" + X.ToString("N5") + "|" + Y.ToString("N5") + "]"; }
+        public override string ToString() { return "[" + X.ToFixedLengthString(5) + "|" + Y.ToFixedLengthString(5) + "]"; }
 
         #region ctors
         public Vector()
