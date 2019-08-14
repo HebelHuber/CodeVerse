@@ -16,7 +16,7 @@
             ship.HP = 100;
             ship.Energy = 100;
             ship.Weight = 500f;
-            ship.pos = new Vector(StaticExtensions.randomNormalizedFloat * 50f, StaticExtensions.randomNormalizedFloat * 50f);
+            ship.pos = new Vector(StaticRandom.randomNormalizedFloat * 50f, StaticRandom.randomNormalizedFloat * 50f);
             return ship;
         }
     }

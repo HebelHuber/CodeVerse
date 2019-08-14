@@ -5,10 +5,10 @@
         public static Planet Random(string name)
         {
             var newObj = new Planet();
-            newObj.pos = new Vector(StaticExtensions.randomNormalizedFloat * 50f, StaticExtensions.randomNormalizedFloat * 50f);
+            newObj.pos = new Vector(StaticRandom.randomNormalizedFloat * 50f, StaticRandom.randomNormalizedFloat * 50f);
             newObj.name = name;
-            newObj.radius = StaticExtensions.randomNormalizedFloat * 20f;
-            newObj.Gravity = StaticExtensions.randomNormalizedFloat * 1f;
+            newObj.radius = StaticRandom.randomNormalizedFloat * 20f;
+            newObj.Gravity = StaticRandom.randomNormalizedFloat * 1f;
             return newObj;
         }
     }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CodeVerse.Common
 {
-    public static class StaticExtensions
+    public static class LogExtensions
     {
         public static string ToStringWithProps<T>(this T inputO, bool onnewlines = false, int NumberDigits = 3, bool printclassname = true, int ClassNamePadding = 15)
         {
@@ -83,25 +83,6 @@ namespace CodeVerse.Common
         public static string ToFixedLengthString(this double val, int length)
         {
             return Convert.ToSingle(val).ToFixedLengthString(length);
-        }
-
-        private static Random random = null;
-
-        public static void SetRandomSeed(int seed)
-        {
-            random = new Random(seed);
-        }
-
-        public static float randomNormalizedFloat
-        {
-            get
-            {
-                if (random == null)
-                    throw new Exception("Random not initialized." +
-                    "Use StaticExtensions.SetRandomSeed() to set a seed.");
-
-                return Convert.ToSingle(random.NextDouble());
-            }
         }
 
         /*
