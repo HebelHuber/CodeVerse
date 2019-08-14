@@ -58,6 +58,21 @@ namespace CodeVerse.Common
             return v.Angle - this.Angle;
         }
 
+        public float DistanceTo(Vector v)
+        {
+            return Vector.VecFromTo(this, v).Length;
+        }
+
+        public static float Distance(Vector a, Vector b)
+        {
+            return Vector.VecFromTo(a, b).Length;
+        }
+
+        public static Vector VecFromTo(Vector a, Vector b)
+        {
+            return new Vector(a.X - b.X, a.Y - b.Y);
+        }
+
         public override string ToString() { return "[" + X.ToFixedLengthString(5) + "|" + Y.ToFixedLengthString(5) + "]"; }
 
         #region ctors

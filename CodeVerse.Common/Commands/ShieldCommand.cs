@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeVerse.Common.Commands
+namespace CodeVerse.Common
 {
     public class ShieldCommand : PlayerCommand
     {

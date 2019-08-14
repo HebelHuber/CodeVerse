@@ -6,5 +6,6 @@ namespace CodeVerse.Common
 {
     public class PlayerCommand
     {
+        public string targetID;
     }
 }

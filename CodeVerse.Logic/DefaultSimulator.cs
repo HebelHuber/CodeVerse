@@ -1,6 +1,7 @@
 ﻿using CodeVerse.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CodeVerse.Logic
@@ -45,13 +46,102 @@ namespace CodeVerse.Logic
         public List<Entity> Simulate(List<PlayerCommand> input)
         {
             // handle user ticks here
-            throw new NotImplementedException();
+            foreach (var cmd in input)
+            {
+                var targetIndex = entities.FindIndex(q => q.name == cmd.targetID);
+
+                if (targetIndex != -1)
+                {
+                    Ship target = (Ship)entities[targetIndex];
+
+                    if (cmd is MoveCommand)
+                    {
+                        MoveCommand parsedCmd = (MoveCommand)cmd;
+                        target.Velocity += parsedCmd.Force;
+                    }
+                    if (cmd is ShootCommand)
+                    {
+                        ShootCommand parsedCmd = (ShootCommand)cmd;
+                        var bullet = new Bullet();
+
+                        string uniqueBulletName = target.name + "_bullet_";
+
+                        var bulletsfromsameship = entities
+                            .Where(q => q is Bullet)
+                            .Select(q => q as Bullet)
+                            .Where(q => q.origin == target.name)
+                            .Select(q => q.name)
+                            .ToList();
+
+                        int indexer = 0;
+                        while (bulletsfromsameship.Contains(uniqueBulletName + indexer.ToString()))
+                            indexer++;
+
+                        bullet.name = uniqueBulletName + indexer.ToString();
+
+                        bullet.origin = target.name;
+                        bullet.Velocity = target.Velocity + (parsedCmd.Direction * parsedCmd.Power);
+                        bullet.pos = target.pos;
+                        entities.Add(bullet);
+                    }
+                    if (cmd is ShieldCommand)
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+            }
+
+            var Movables = entities
+                .Where(q => q is MovingEntity)
+                .Select(q => q as MovingEntity)
+                .ToList();
+
+            foreach (var item in Movables)
+                ApplyWorldForces(item);
+
+            foreach (var item in Movables)
+                MoveFromVelocity(item);
+
+            return entities;
+        }
+
+        private void ApplyWorldForces(MovingEntity unit)
+        {
+            var Gravitationals = entities
+                .Where(q => q is StaticEntity)
+                .Select(q => q as StaticEntity)
+                .Where(q => q.Gravity > 0)
+                .ToList();
+
+            foreach (var grav in Gravitationals)
+            {
+                Vector offset = Vector.VecFromTo(grav.pos, unit.pos);
+                float strength = grav.Gravity;
+
+                // replace this later with "open end" method
+                float appliedGravityPower = offset.Length.Remap(0, 5000, 1, 0, clamp: true) * strength;
+
+                unit.Velocity += offset * appliedGravityPower;
+            }
+        }
+
+        private void MoveFromVelocity(MovingEntity unit)
+        {
+            unit.pos += unit.Velocity;
         }
 
         public List<Entity> Wipe()
         {
             // kill everything non-static
-            throw new NotImplementedException();
+            var KillList = entities
+                .Where(q => q is MovingEntity)
+                .Select(q => q as MovingEntity)
+                .ToList();
+
+            foreach (var item in KillList)
+                entities.Remove(item);
+
+            return entities;
         }
     }
 }

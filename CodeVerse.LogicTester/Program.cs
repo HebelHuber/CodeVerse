@@ -15,14 +15,23 @@ namespace CodeVerse.LogicTester
             //PrintEntities(sim.GenerateMap());
             PrintEntities(sim.GenerateMap(123));
 
-            //Thread.Sleep(-1);
+            while (true)
+            {
+                Console.Clear();
+                PrintEntities(sim.Simulate(new List<PlayerCommand>()), true);
+                Thread.Sleep(150);
+            }
+
             Console.ReadKey(true);
         }
 
-        private static void PrintEntities(List<Entity> ents)
+        private static void PrintEntities(List<Entity> ents, bool dynamicOnly = false)
         {
             foreach (var item in ents)
             {
+                if (dynamicOnly && !(item is MovingEntity))
+                    continue;
+
                 if (item is Sun)
                     Console.ForegroundColor = ConsoleColor.Yellow;
                 else if (item is Planet)

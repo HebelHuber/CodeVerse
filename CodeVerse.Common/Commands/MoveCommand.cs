@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeVerse.Common.Commands
+namespace CodeVerse.Common
 {
     public class MoveCommand : PlayerCommand
     {
+        public Vector Force;
     }
 }
