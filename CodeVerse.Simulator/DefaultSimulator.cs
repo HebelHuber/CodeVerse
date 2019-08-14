@@ -14,26 +14,41 @@ namespace CodeVerse.Simulator
         {
             entities = new List<Entity>();
 
+            // eine Sonne auf jeden Fall
+            entities.Add(RandomSun("Sun_start"));
+
             // generate a random map of static objects
-            for (int i = 0; i < 5; i++)
-                entities.Add(RandomSun("Sun_" + i));
-
-            for (int i = 0; i < 10; i++)
-                entities.Add(RandomPlanet("Planet_" + i));
-
             for (int i = 0; i < 20; i++)
-                entities.Add(RandomMoon("Moon_" + i));
+            {
+                int entityType = StaticExtensions.GetRandomWeightedIndex(1f, 5f, 10f);
+                switch (entityType)
+                {
+                    case 0: entities.Add(RandomSun("Sun_" + i)); break;
+                    case 1: entities.Add(RandomPlanet("Planet_" + i)); break;
+                    case 2: entities.Add(RandomMoon("Moon_" + i)); break;
+                    default: break;
+                }
+            }
 
             var ship = new Ship();
             ship.Velocity = new Vector();
             ship.name = "Ship_0";
-            ship.radius = 1f;
+            ship.radius = 5f;
             ship.Owner = "bob";
             ship.HP = 100;
             ship.Energy = 100;
+            ship.Weight = 500f;
             ship.pos = new Vector(randomNormalizedFloat * 50f, randomNormalizedFloat * 50f);
-
             entities.Add(ship);
+
+            var bullet = new Bullet();
+            bullet.name = "Bullet_0";
+            bullet.origin = ship.name;
+            bullet.pos = new Vector();
+            bullet.Velocity = new Vector(500, 100);
+            bullet.radius = 1f;
+            bullet.Weight = 50f;
+            entities.Add(bullet);
 
             return entities;
         }

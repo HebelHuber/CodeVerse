@@ -52,5 +52,36 @@ namespace CodeVerse.Common
             else
                 return String.Join(" ", PerPropString.ToArray());
         }
+
+        private static Random random = null;
+
+        public static int GetRandomWeightedIndex(params float[] weights)
+        {
+            if (random == null) random = new Random();
+
+            if (weights == null || weights.Length == 0) return -1;
+
+            // add up all the weights
+            float total = 0f;
+            for (int i = 0; i < weights.Length; i++)
+            {
+                if (float.IsPositiveInfinity(weights[i])) return i;
+                else if (weights[i] >= 0f && !float.IsNaN(weights[i])) total += weights[i];
+            }
+
+            float randomFloat = Convert.ToSingle(random.NextDouble());
+            float movingChance = 0f;
+
+            // now step through the weights and check if we hit it
+            for (int i = 0; i < weights.Length; i++)
+            {
+                if (float.IsNaN(weights[i]) || weights[i] <= 0f) continue;
+
+                movingChance += weights[i] / total;
+                if (movingChance >= randomFloat) return i;
+            }
+
+            return -1;
+        }
     }
 }

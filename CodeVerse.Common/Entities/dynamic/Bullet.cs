@@ -4,9 +4,8 @@ using System.Text;
 
 namespace CodeVerse.Common
 {
-    public class MovingEntity : Entity
+    public class Bullet : MovingEntity
     {
-        public Vector Velocity;
-        public float Weight;
+        public string origin;
     }
 }

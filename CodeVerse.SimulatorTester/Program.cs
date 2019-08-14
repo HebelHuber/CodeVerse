@@ -15,7 +15,19 @@ namespace CodeVerse.SimulatorTester
 
             foreach (var item in ents)
             {
+                if (item is Sun)
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                else if (item is Planet)
+                    Console.ForegroundColor = ConsoleColor.Green;
+                else if (item is Moon)
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                else if (item is Ship)
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                else if (item is Bullet)
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+
                 Console.WriteLine(item.ToStringWithProps());
+                Console.ResetColor();
             }
 
             //while (true)
