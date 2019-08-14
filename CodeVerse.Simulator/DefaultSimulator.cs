@@ -24,6 +24,14 @@ namespace CodeVerse.Simulator
             for (int i = 0; i < 20; i++)
                 entities.Add(RandomMoon("Moon_" + i));
 
+            var ship = new Ship();
+            ship.Velocity = new Vector();
+            ship.Owner = "bob";
+            ship.HP = 100;
+            ship.Energy = 100;
+
+            entities.Add(ship);
+
             return entities;
         }
 
