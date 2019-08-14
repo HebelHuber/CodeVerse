@@ -26,9 +26,12 @@ namespace CodeVerse.Simulator
 
             var ship = new Ship();
             ship.Velocity = new Vector();
+            ship.name = "Ship_0";
+            ship.radius = 1f;
             ship.Owner = "bob";
             ship.HP = 100;
             ship.Energy = 100;
+            ship.pos = new Vector(randomNormalizedFloat * 50f, randomNormalizedFloat * 50f);
 
             entities.Add(ship);
 
