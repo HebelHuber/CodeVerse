@@ -8,13 +8,19 @@ namespace CodeVerse.Logic
 {
     public class DefaultSimulator : Simulator
     {
-        public DefaultSimulator(int seed, float mapsize, bool debugmode = false)
+        private int entitycountmult;
+
+        public DefaultSimulator(int seed = 0, float mapsize = 1000f, bool debugmode = false) : base(seed, mapsize, debugmode)
         {
-            base.Init(seed, mapsize, debugmode);
+            this.entitycountmult = Math.Max(1, Convert.ToInt32(mapsize / 1000f));
+            entities = new List<Entity>();
         }
 
-        public override void MapGen()
+        public override void GenerateMap()
         {
+            Console.Write("Generating map...");
+
+            #region Hardcoded maps
             // here we have an example of a hardcoded map for a specific seed
             if (seed == -1)
             {
@@ -22,13 +28,13 @@ namespace CodeVerse.Logic
                 float rightX = (mapsize / 4f) * 3f;
                 float upperY = (mapsize / 4f);
                 float lowerY = (mapsize / 4f) * 3f;
-                entities.Add(new Sun("Sun_UL_10", 10f, new Vector(leftX, upperY)));
-                entities.Add(new Sun("Sun_UR_50", 50f, new Vector(rightX, upperY)));
-                entities.Add(new Sun("Sun_LL_75", 75f, new Vector(leftX, lowerY)));
-                entities.Add(new Sun("Sun_LR_100", 100f, new Vector(rightX, lowerY)));
+                entities.Add(new Sun("Sun_10", 10f, new Vector(leftX, upperY)));
+                entities.Add(new Sun("Sun_50", 50f, new Vector(rightX, upperY)));
+                entities.Add(new Sun("Sun_75", 75f, new Vector(leftX, lowerY)));
+                entities.Add(new Sun("Sun_100", 100f, new Vector(rightX, lowerY)));
 
-                Vector center = new Vector((mapsize / 4f) * 2f, (mapsize / 4f) * 2f);
-                entities.Add(new Ship("Bob", "Lukas", 100, 100, center, Vector.Zero));
+                Vector spawnpoint = new Vector((mapsize / 4f) * 2f, (mapsize / 4f) * 3f);
+                entities.Add(new Ship(0, "Bob", "Lukas", 100, 100, spawnpoint, Vector.FromAngleLength(210, 10)));
 
                 return;
             }
@@ -42,17 +48,18 @@ namespace CodeVerse.Logic
                 for (int i = 0; i < 10; i++)
                 {
                     var shipPos = new Vector(center.X - (sun.radius * dist), center.Y);
-                    entities.Add(new Ship(dist.ToString(), "Lukas", 100, 100, shipPos, new Vector(0, 1f + dist)));
+                    entities.Add(new Ship(i, dist.ToString(), "Lukas", 100, 100, shipPos, new Vector(0, 1f + dist)));
                     dist += 0.5f;
                 }
 
                 return;
             }
+            #endregion
 
             // generate a random map
 
             // some Suns
-            int SunCount = StaticRandom.randomInt(2, 2);
+            int SunCount = StaticRandom.randomInt(1 * entitycountmult, 2 * entitycountmult);
             for (int i = 0; i < SunCount; i++)
             {
                 var e = Sun.Random("Sun_" + i, mapsize);
@@ -64,7 +71,7 @@ namespace CodeVerse.Logic
             }
 
             // some Planets
-            int PlanetCount = StaticRandom.randomInt(1, 5);
+            int PlanetCount = StaticRandom.randomInt(1 * entitycountmult, 5 * entitycountmult);
             for (int i = 0; i < PlanetCount; i++)
             {
                 var e = Planet.Random("Planet_" + i, mapsize);
@@ -76,7 +83,7 @@ namespace CodeVerse.Logic
             }
 
             // some Moons
-            int MoonCount = StaticRandom.randomInt(1, 10);
+            int MoonCount = StaticRandom.randomInt(1 * entitycountmult, 10 * entitycountmult);
             for (int i = 0; i < MoonCount; i++)
             {
                 var e = Moon.Random("Moon_" + i, mapsize);
@@ -88,10 +95,10 @@ namespace CodeVerse.Logic
             }
 
             // some ships
-            int ShipCount = StaticRandom.randomInt(10, 20);
+            int ShipCount = StaticRandom.randomInt(5 * entitycountmult, 20 * entitycountmult);
             for (int i = 0; i < ShipCount; i++)
             {
-                var ship = Ship.Random("Bob", "Ship_" + i, mapsize);
+                var ship = Ship.Random(i, "Bob", "Ship_" + i, mapsize);
                 while (ship.CollidesWithMultiple(entities).Count != 0)
                 {
                     ship.pos = StaticRandom.RandomVecInSquare(ship.radius, mapsize - ship.radius);
@@ -108,11 +115,15 @@ namespace CodeVerse.Logic
                 for (int i = 0; i < bulletsPerShip; i++)
                 {
                     Vector vel = Vector.FromAngleLength(i * (360f / bulletsPerShip), 5f);
-                    var bullet = new Bullet("blt", ship.name, ship.pos + vel, ship.Velocity + vel);
+                    var bullet = new Bullet("blt", ship.ID, ship.pos + vel, ship.Velocity + vel);
+                    bullet.name = ship.name + "'s bullet";
                     entities.Add(bullet);
                 }
             }
 
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Done (" + entities.Count + "entities)");
+            Console.ResetColor();
         }
 
         protected override List<ScannerContent> SimulateInternal(List<PlayerCommand> input = null)
@@ -122,11 +133,11 @@ namespace CodeVerse.Logic
                 // handle user ticks here
                 foreach (var cmd in input)
                 {
-                    var targetIndex = entities.FindIndex(q => q.name == cmd.targetID);
+                    var targetID = entities.FindIndex(q => q.ID == cmd.targetID);
 
-                    if (targetIndex != -1)
+                    if (targetID != -1)
                     {
-                        Ship target = (Ship)entities[targetIndex];
+                        Ship target = (Ship)entities[targetID];
 
                         if (cmd is MoveCommand)
                         {
@@ -137,23 +148,8 @@ namespace CodeVerse.Logic
                         {
                             ShootCommand parsedCmd = (ShootCommand)cmd;
                             var bullet = new Bullet();
-
-                            string uniqueBulletName = target.name + "_bullet_";
-
-                            var bulletsfromsameship = entities
-                                .Where(q => q is Bullet)
-                                .Select(q => q as Bullet)
-                                .Where(q => q.origin == target.name)
-                                .Select(q => q.name)
-                                .ToList();
-
-                            int indexer = 0;
-                            while (bulletsfromsameship.Contains(uniqueBulletName + indexer.ToString()))
-                                indexer++;
-
-                            bullet.name = uniqueBulletName + indexer.ToString();
-
-                            bullet.origin = target.name;
+                            bullet.name = target.name + "'s bullet";
+                            bullet.originID = target.ID;
                             bullet.Velocity = target.Velocity + (parsedCmd.Direction * parsedCmd.Power);
                             bullet.pos = target.pos;
                             entities.Add(bullet);

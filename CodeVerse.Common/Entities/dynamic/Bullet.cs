@@ -6,14 +6,14 @@ namespace CodeVerse.Common
 {
     public class Bullet : MovingEntity
     {
-        public string origin;
+        public long originID;
 
         public Bullet() { }
 
-        public Bullet(string name, string origin, Vector pos, Vector vel, float mass = 0f)
+        public Bullet(string name, long originID, Vector pos, Vector vel, float mass = 0f)
         {
             this.name = name;
-            this.origin = origin;
+            this.originID = originID;
             this.pos = pos;
             this.Velocity = vel;
             this.radius = 2.5f;
@@ -24,11 +24,11 @@ namespace CodeVerse.Common
                 this.mass = mass;
         }
 
-        public static Bullet Random(string origin, float mapsize)
+        public static Bullet Random(long originID, float mapsize)
         {
             var bullet = new Bullet();
             bullet.name = "Bullet_0";
-            bullet.origin = origin;
+            bullet.originID = originID;
             bullet.pos = StaticRandom.RandomVecInSquare(0, mapsize);
             bullet.Velocity = new Vector(500, 100) * 0;
             bullet.radius = 2.5f;

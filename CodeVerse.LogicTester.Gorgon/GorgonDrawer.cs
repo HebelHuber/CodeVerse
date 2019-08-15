@@ -97,7 +97,7 @@ namespace CodeVerse.LogicTester.Gorgon
                               msg,
                               new DX.Vector2(pos.X * displayFactor, pos.Y * displayFactor),
                               _font,
-                              GorgonColor.WhiteSmoke
+                              GorgonColor.Black
                               );
             }
         }
@@ -107,7 +107,7 @@ namespace CodeVerse.LogicTester.Gorgon
             if (e.PositionHistory.Count == 0)
                 return;
 
-            DrawVector(e.pos, e.PositionHistory.Last(), clr);
+            DrawVector(e.pos, e.PositionHistory[e.PositionHistory.Count - 1], clr);
 
             for (int i = e.PositionHistory.Count - 2; i >= 0; i--)
             {

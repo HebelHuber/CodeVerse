@@ -24,24 +24,20 @@ namespace CodeVerse.Logic
                 throw new Exception("Simulator not in debug mode, no access to entities.");
         }
 
-        protected void Init(int seed, float mapsize, bool debugmode)
+        protected Simulator(int seed = 0, float mapsize = 1000f, bool debugmode = false)
         {
-            this.debugMode = debugmode;
-            this.mapsize = mapsize;
 
             if (seed == 0)
                 StaticRandom.SetRandomSeed();
             else
                 StaticRandom.SetSeed(seed);
 
+            this.debugMode = debugmode;
+            this.mapsize = mapsize;
             this.seed = seed;
-
-            entities = new List<Entity>();
-
-            MapGen();
         }
 
-        public abstract void MapGen();
+        public abstract void GenerateMap();
 
         public List<ScannerContent> Simulate(List<PlayerCommand> input = null)
         {

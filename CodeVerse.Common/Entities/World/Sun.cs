@@ -20,7 +20,7 @@
         {
             var newObj = new Sun();
             newObj.name = name;
-            newObj.radius = StaticRandom.randomNormalizedFloat.Remap(0, 1, 50, 100);
+            newObj.radius = StaticRandom.randomFloatInRange(50, 120);
             newObj.mass = newObj.radius;
             newObj.pos = StaticRandom.RandomVecInSquare(newObj.radius, maxMapSize - newObj.radius);
 

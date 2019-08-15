@@ -20,6 +20,64 @@ namespace CodeVerse.LogicTester.Gorgon
 {
     static class Program
     {
+        private static DefaultSimulator sim;
+        private static List<Entity> ents;
+        private static float mapsize;
+        private static int screenMin;
+
+        [STAThread]
+        static void Main()
+        {
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                var form = new Form1();
+                Initialize(form);
+
+
+                screenMin = Math.Min(form.ClientSize.Height, form.ClientSize.Width); // muss der drawer nachher wissen
+                mapsize = 2000f; // muss der drawer nachher wissen
+
+                sim = new DefaultSimulator(seed: 551000, mapsize: mapsize, debugmode: true);
+                sim.GenerateMap();
+
+                ents = sim.GetDebugEntities(); // muss der drawer nachher wissen
+
+                Task.Run(() => { KeepTickin(); });
+
+                GorgonApplication.AllowBackground = true;
+                GorgonApplication.Run(form, RenderLoop);
+            }
+            catch (Exception ex)
+            {
+                ex.Catch(_ => GorgonDialogs.ErrorBox(null, ex));
+            }
+            finally
+            {
+                _font?.Dispose();
+                _renderer?.Dispose();
+                _screen?.Dispose();
+                _graphics?.Dispose();
+            }
+        }
+
+        private static void KeepTickin(float simFps = 25)
+        {
+            Thread.Sleep(2500);
+
+            int fpsAsMilliseconds = Convert.ToInt32(1000f / simFps);
+
+            while (true)
+            {
+                sim.Simulate();
+                ents = sim.GetDebugEntities();
+                Thread.Sleep(fpsAsMilliseconds);
+            }
+        }
+
+        #region Rendering
         private static GorgonGraphics _graphics;
         private static GorgonSwapChain _screen;
         private static Gorgon2D _renderer;
@@ -58,57 +116,6 @@ namespace CodeVerse.LogicTester.Gorgon
             _font = FF.DefaultFont;
             _renderer = new Gorgon2D(_graphics);
         }
-
-        private static DefaultSimulator sim;
-        private static List<Entity> ents;
-        private static float mapsize = 2000f;
-        private static int screenMin;
-
-        [STAThread]
-        static void Main()
-        {
-            try
-            {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-
-                var form = new Form1();
-                Initialize(form);
-
-                screenMin = Math.Min(form.ClientSize.Height, form.ClientSize.Width);
-                sim = new DefaultSimulator(20, mapsize, debugmode: true);
-                ents = sim.GetDebugEntities();
-                Task.Run(() => { KeepTickin(); });
-
-
-                GorgonApplication.AllowBackground = true;
-                GorgonApplication.Run(form, RenderLoop);
-            }
-            catch (Exception ex)
-            {
-                ex.Catch(_ => GorgonDialogs.ErrorBox(null, ex));
-            }
-            finally
-            {
-                _font?.Dispose();
-                _renderer?.Dispose();
-                _screen?.Dispose();
-                _graphics?.Dispose();
-            }
-        }
-
-        private static void KeepTickin(float simFps = 25)
-        {
-            Thread.Sleep(2500);
-
-            int fpsAsMilliseconds = Convert.ToInt32(1000f / simFps);
-
-            while (true)
-            {
-                sim.Simulate();
-                ents = sim.GetDebugEntities();
-                Thread.Sleep(fpsAsMilliseconds);
-            }
-        }
+        #endregion
     }
 }
