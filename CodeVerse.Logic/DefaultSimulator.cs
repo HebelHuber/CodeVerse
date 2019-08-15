@@ -1,61 +1,116 @@
-﻿using CodeVerse.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CodeVerse.Common;
 
 namespace CodeVerse.Logic
 {
-    public class DefaultSimulator : ICanSimulate
+    public class DefaultSimulator : Simulator
     {
-        private List<Entity> entities;
-        public List<Entity> GetDebugEntities()
+        public DefaultSimulator(int seed, float mapsize, float GravityMultiplier = 1, bool debugmode = false)
         {
-            if (EntitiesArePublic)
-                return entities;
-            else
-                throw new Exception("Simulator not in debug mode, no access to entities.");
+            base.Init(seed, mapsize, GravityMultiplier, debugmode);
         }
 
-        public bool IsDebugMode() { return EntitiesArePublic; }
-
-        private bool EntitiesArePublic;
-
-        public void GenerateMap(int seed = 0, bool PublicEntities = false)
+        public override void MapGen()
         {
-            this.EntitiesArePublic = PublicEntities;
+            // here we have an example of a hardcoded map for a specific seed
+            if (seed == -1)
+            {
+                float leftX = (mapsize / 4f);
+                float rightX = (mapsize / 4f) * 3f;
+                float upperY = (mapsize / 4f);
+                float lowerY = (mapsize / 4f) * 3f;
+                entities.Add(new Sun("Sun_UL_10", 10f, new Vector(leftX, upperY)));
+                entities.Add(new Sun("Sun_UR_50", 50f, new Vector(rightX, upperY)));
+                entities.Add(new Sun("Sun_LL_75", 75f, new Vector(leftX, lowerY)));
+                entities.Add(new Sun("Sun_LR_100", 100f, new Vector(rightX, lowerY)));
 
-            if (seed == 0)
-                StaticRandom.SetRandomSeed();
-            else
-                StaticRandom.SetSeed(seed);
+                Vector center = new Vector((mapsize / 4f) * 2f, (mapsize / 4f) * 2f);
+                entities.Add(new Ship("Bob", "Lukas", 100, 100, center, Vector.Zero));
 
-            entities = new List<Entity>();
+                return;
+            }
+            else if (seed == -2)
+            {
+                Vector center = new Vector((mapsize / 4f) * 2f, (mapsize / 4f) * 2f);
+                var sun = new Sun("Sun_Main_1.0", 80f, center);
+                entities.Add(sun);
 
-            // generate a random map of static objects
-            float mapsize = 500f;
+                float dist = 1.2f;
+                for (int i = 0; i < 10; i++)
+                {
+                    var shipPos = new Vector(center.X - (sun.radius * dist), center.Y);
+                    entities.Add(new Ship(dist.ToString(), "Lukas", 100, 100, shipPos, new Vector(0, 1f + dist)));
+                    dist += 0.5f;
+                }
+
+                return;
+            }
+
+            // generate a random map
 
             // some Suns
-            int SunCount = StaticRandom.randomInt(1, 2);
+            int SunCount = StaticRandom.randomInt(2, 2);
             for (int i = 0; i < SunCount; i++)
-                entities.Add(Sun.Random("Sun_" + i, mapsize));
+            {
+                var e = Sun.Random("Sun_" + i, mapsize);
+
+                while (e.CollidesWithMultiple(entities).Count != 0)
+                    e.pos = StaticRandom.RandomVecInSquare(e.radius, mapsize - e.radius);
+
+                entities.Add(e);
+            }
 
             // some Planets
-            int PlanetCount = StaticRandom.randomInt(3, 10);
+            int PlanetCount = StaticRandom.randomInt(1, 5);
             for (int i = 0; i < PlanetCount; i++)
-                entities.Add(Planet.Random("Planet_" + i, mapsize));
+            {
+                var e = Planet.Random("Planet_" + i, mapsize);
+
+                while (e.CollidesWithMultiple(entities).Count != 0)
+                    e.pos = StaticRandom.RandomVecInSquare(e.radius, mapsize - e.radius);
+
+                entities.Add(e);
+            }
 
             // some Moons
-            int MoonCount = StaticRandom.randomInt(10, 20);
+            int MoonCount = StaticRandom.randomInt(1, 10);
             for (int i = 0; i < MoonCount; i++)
-                entities.Add(Moon.Random("Moon_" + i, mapsize));
+            {
+                var e = Moon.Random("Moon_" + i, mapsize);
 
-            // add a ship and a bullet
-            entities.Add(Ship.Random("Bob", "Ship_0", mapsize));
-            entities.Add(Bullet.Random("Ship_0", mapsize));
+                while (e.CollidesWithMultiple(entities).Count != 0)
+                    e.pos = StaticRandom.RandomVecInSquare(e.radius, mapsize - e.radius);
+
+                entities.Add(e);
+            }
+
+            // some ships
+            int ShipCount = StaticRandom.randomInt(10, 20);
+            for (int i = 0; i < ShipCount; i++)
+            {
+                var ship = Ship.Random("Bob", "Ship_" + i, mapsize);
+                while (ship.CollidesWithMultiple(entities).Count != 0)
+                {
+                    ship.pos = StaticRandom.RandomVecInSquare(ship.radius, mapsize - ship.radius);
+                }
+                entities.Add(ship);
+            }
+
+            // some bullets
+            //int BulletCount = StaticRandom.randomInt(250, 500);
+            //for (int i = 0; i < BulletCount; i++)
+            //{
+            //    var bullet = Bullet.Random("Ship_0", mapsize);
+            //    while (bullet.CollidesWithMultiple(entities).Count != 0)
+            //        bullet.pos = StaticRandom.RandomVecInSquare(bullet.radius, mapsize - bullet.radius);
+            //    entities.Add(bullet);
+            //}
         }
 
-        public List<ScannerContent> Simulate(List<PlayerCommand> input = null)
+        public override List<ScannerContent> Simulate(List<PlayerCommand> input = null)
         {
             if (input != null)
             {
@@ -111,41 +166,73 @@ namespace CodeVerse.Logic
                 .Select(q => q as MovingEntity)
                 .ToList();
 
-            foreach (var item in Movables)
-                ApplyWorldForces(item);
+            foreach (var movable in Movables)
+                ApplyWorldForces(movable);
 
-            foreach (var item in Movables)
-                MoveFromVelocity(item);
+            foreach (var movable in Movables)
+            {
+                if (movable.PositionHistory.Count > 20)
+                    movable.PositionHistory.RemoveAt(0);
+
+                movable.PositionHistory.Add(movable.pos);
+                movable.pos += movable.Velocity;
+            }
+
+            var CollidedMovables = new List<Entity>();
+            foreach (var movable in Movables)
+            {
+                var collisions = movable.CollidesWithMultiple(entities);
+
+                if (collisions.Count > 0)
+                {
+                    Console.WriteLine(movable.name + " died colliding with " + collisions[0].name);
+                    CollidedMovables.Add(movable);
+                }
+            }
+
+            foreach (var item in CollidedMovables)
+                entities.Remove(item);
+
+            if (CollidedMovables.Count != 0)
+            {
+                int moavblesleft = Movables.Count - CollidedMovables.Count;
+                Console.WriteLine(moavblesleft + " movables still alive");
+            }
 
             return new List<ScannerContent>();
         }
 
         private void ApplyWorldForces(MovingEntity unit)
         {
+            // was nehmen wir alles für Gravity? alles oder alles static oder nur sonnen?
+
+            //var Gravitationals = entities
+            //    .Where(q => q != unit)
+            //    .ToList();
+
+            //var Gravitationals = entities
+            //    .Where(q => q is StaticEntity && q != unit)
+            //    .ToList();
+
             var Gravitationals = entities
-                .Where(q => q is StaticEntity)
-                .Select(q => q as StaticEntity)
-                .Where(q => q.Gravity > 0)
+                .Where(q => q is Sun && q != unit)
                 .ToList();
 
             foreach (var grav in Gravitationals)
             {
-                Vector offset = Vector.VecFromTo(grav.pos, unit.pos);
-                float strength = grav.Gravity;
+                Vector localVec = Vector.VecFromTo(grav.pos, unit.pos);
 
-                // replace this later with "open end" method
-                float appliedGravityPower = offset.Length.Remap(0, 5000, 1, 0, clamp: true) * strength;
+                // now for the real shit, real physics formula
+                // Force = Gravitational Constant * Mass1 * Mass2 / distance²
+                // Gravitational Constant is 6.67408 × 10^(-11) 
+                float GravConstant = 0.0000000000667408f;
+                GravConstant *= 1000000000f;
+                float appliedGravityPower = GravConstant * (grav.mass * unit.mass) / (localVec.Length * localVec.Length);
 
-                var GravVector = offset * appliedGravityPower * 0.001f;
-                Console.WriteLine("Force from " + grav.name + " on " + unit.name + ": " + GravVector);
+                var GravVector = localVec * appliedGravityPower * GravityMultiplier;
 
                 unit.Velocity += GravVector;
             }
-        }
-
-        private void MoveFromVelocity(MovingEntity unit)
-        {
-            unit.pos += unit.Velocity;
         }
     }
 }

@@ -7,9 +7,8 @@
             var newObj = new Moon();
             newObj.name = name;
             newObj.radius = StaticRandom.randomFloatInRange(3, 8);
+            newObj.mass = newObj.radius;
             newObj.pos = StaticRandom.RandomVecInSquare(newObj.radius, maxMapSize - newObj.radius);
-            newObj.Gravity = 0f;
-
             return newObj;
         }
     }

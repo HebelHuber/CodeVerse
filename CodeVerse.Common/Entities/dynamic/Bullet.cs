@@ -15,8 +15,8 @@ namespace CodeVerse.Common
             bullet.origin = origin;
             bullet.pos = StaticRandom.RandomVecInSquare(0, mapsize);
             bullet.Velocity = new Vector(500, 100) * 0;
-            bullet.radius = 1f;
-            bullet.Weight = 50f;
+            bullet.radius = 2.5f;
+            bullet.mass = bullet.radius;
             return bullet;
         }
     }

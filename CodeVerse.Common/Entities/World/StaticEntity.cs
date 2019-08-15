@@ -2,6 +2,5 @@
 {
     public abstract class StaticEntity : Entity
     {
-        public float Gravity;
     }
 }

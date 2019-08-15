@@ -6,6 +6,7 @@ namespace CodeVerse.Common
     {
         public string name;
         public float radius;
+        public float mass;
         public Vector pos;
     }
 }

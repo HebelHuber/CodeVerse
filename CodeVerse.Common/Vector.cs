@@ -99,6 +99,8 @@ namespace CodeVerse.Common
             this.Y = y * length;
         }
 
+        public static Vector Zero { get { return new Vector(0, 0); } }
+
         public static Vector FromAngleLength(float angle, float length = 1f)
         {
             return AngleToVector(angle) * length;
