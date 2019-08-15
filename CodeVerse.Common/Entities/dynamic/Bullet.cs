@@ -8,6 +8,22 @@ namespace CodeVerse.Common
     {
         public string origin;
 
+        public Bullet() { }
+
+        public Bullet(string name, string origin, Vector pos, Vector vel, float mass = 0f)
+        {
+            this.name = name;
+            this.origin = origin;
+            this.pos = pos;
+            this.Velocity = vel;
+            this.radius = 2.5f;
+
+            if (mass == 0)
+                this.mass = this.radius;
+            else
+                this.mass = mass;
+        }
+
         public static Bullet Random(string origin, float mapsize)
         {
             var bullet = new Bullet();

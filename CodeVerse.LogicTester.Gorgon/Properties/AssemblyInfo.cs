@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CodeVerse.LogicTesterGUI")]
+[assembly: AssemblyTitle("CodeVerse.LogicTester.Gorgon")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CodeVerse.LogicTesterGUI")]
+[assembly: AssemblyProduct("CodeVerse.LogicTester.Gorgon")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("342735af-03fa-4413-ad07-5d3306e31d46")]
+[assembly: Guid("c858de88-34ec-4316-9f73-6e2d4689b7bd")]
 
 // Version information for an assembly consists of the following four values:
 //

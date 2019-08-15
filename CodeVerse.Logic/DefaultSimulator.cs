@@ -8,9 +8,9 @@ namespace CodeVerse.Logic
 {
     public class DefaultSimulator : Simulator
     {
-        public DefaultSimulator(int seed, float mapsize, float GravityMultiplier = 1, bool debugmode = false)
+        public DefaultSimulator(int seed, float mapsize, bool debugmode = false)
         {
-            base.Init(seed, mapsize, GravityMultiplier, debugmode);
+            base.Init(seed, mapsize, debugmode);
         }
 
         public override void MapGen()
@@ -99,15 +99,20 @@ namespace CodeVerse.Logic
                 entities.Add(ship);
             }
 
+            var ships = entities.Where(q => q is Ship).Select(q => q as Ship).ToList();
+
             // some bullets
-            int BulletCount = StaticRandom.randomInt(10, 50);
-            for (int i = 0; i < BulletCount; i++)
+            foreach (var ship in ships)
             {
-                var bullet = Bullet.Random("Ship_0", mapsize);
-                while (bullet.CollidesWithMultiple(entities).Count != 0)
-                    bullet.pos = StaticRandom.RandomVecInSquare(bullet.radius, mapsize - bullet.radius);
-                entities.Add(bullet);
+                int bulletsPerShip = 4;
+                for (int i = 0; i < bulletsPerShip; i++)
+                {
+                    Vector vel = Vector.FromAngleLength(i * (360f / bulletsPerShip), 5f);
+                    var bullet = new Bullet("blt", ship.name, ship.pos + vel, ship.Velocity + vel);
+                    entities.Add(bullet);
+                }
             }
+
         }
 
         protected override List<ScannerContent> SimulateInternal(List<PlayerCommand> input = null)
@@ -171,7 +176,7 @@ namespace CodeVerse.Logic
 
             foreach (var movable in Movables)
             {
-                if (movable.PositionHistory.Count > 20)
+                if (movable.PositionHistory.Count > 50)
                     movable.PositionHistory.RemoveAt(0);
 
                 movable.PositionHistory.Add(movable.pos);
@@ -185,19 +190,15 @@ namespace CodeVerse.Logic
 
                 if (collisions.Count > 0)
                 {
-                    Console.WriteLine(movable.name + " died colliding with " + collisions[0].name);
                     CollidedMovables.Add(movable);
+
+                    if (movable is Ship)
+                        Console.WriteLine(movable.name + " died colliding with " + collisions[0].name);
                 }
             }
 
             foreach (var item in CollidedMovables)
                 entities.Remove(item);
-
-            if (CollidedMovables.Count != 0)
-            {
-                int moavblesleft = Movables.Count - CollidedMovables.Count;
-                Console.WriteLine(moavblesleft + " movables still alive");
-            }
 
             return new List<ScannerContent>();
         }
@@ -210,13 +211,13 @@ namespace CodeVerse.Logic
             //    .Where(q => q != unit)
             //    .ToList();
 
-            //var Gravitationals = entities
-            //    .Where(q => q is StaticEntity && q != unit)
-            //    .ToList();
-
             var Gravitationals = entities
-                .Where(q => q is Sun && q != unit)
+                .Where(q => q is StaticEntity && q != unit)
                 .ToList();
+
+            //var Gravitationals = entities
+            //    .Where(q => q is Sun && q != unit)
+            //    .ToList();
 
             foreach (var grav in Gravitationals)
             {
@@ -227,9 +228,9 @@ namespace CodeVerse.Logic
                 // Gravitational Constant is 6.67408 × 10^(-11) 
                 float GravConstant = 0.0000000000667408f;
                 GravConstant *= 1000000000f;
-                float appliedGravityPower = GravConstant * (grav.mass * unit.mass) / (localVec.Length * localVec.Length);
+                float appliedGravityPower = GravConstant * ((grav.mass * unit.mass) / (localVec.Length * localVec.Length));
 
-                var GravVector = localVec * appliedGravityPower * GravityMultiplier;
+                var GravVector = localVec * appliedGravityPower;
 
                 unit.Velocity += GravVector;
             }

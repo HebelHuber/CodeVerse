@@ -15,8 +15,6 @@ namespace CodeVerse.Logic
         protected List<Entity> entities;
         public float mapsize;
         protected bool debugMode;
-        protected float GravityMultiplier = 1f;
-
 
         public List<Entity> GetDebugEntities()
         {
@@ -26,11 +24,10 @@ namespace CodeVerse.Logic
                 throw new Exception("Simulator not in debug mode, no access to entities.");
         }
 
-        protected void Init(int seed, float mapsize, float GravityMultiplier, bool debugmode)
+        protected void Init(int seed, float mapsize, bool debugmode)
         {
             this.debugMode = debugmode;
             this.mapsize = mapsize;
-            this.GravityMultiplier = GravityMultiplier;
 
             if (seed == 0)
                 StaticRandom.SetRandomSeed();
@@ -54,7 +51,10 @@ namespace CodeVerse.Logic
                 stopwatch.Start();
                 var result = SimulateInternal(input);
                 stopwatch.Stop();
-                Console.WriteLine("Simulation Time: {0}ms", stopwatch.ElapsedMilliseconds);
+
+                if (stopwatch.ElapsedMilliseconds > 50)
+                    Console.WriteLine("Simulation Time: {0}ms", stopwatch.ElapsedMilliseconds);
+
                 return result;
             }
             else

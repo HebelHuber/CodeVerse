@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CodeVerse.LogicTesterGUI.Properties
+namespace CodeVerse.LogicTester.Gorgon.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace CodeVerse.LogicTesterGUI.Properties
             {
                 if ((resourceMan == null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CodeVerse.LogicTesterGUI.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CodeVerse.LogicTester.Gorgon.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

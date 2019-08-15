@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CodeVerse.LogicTesterGUI.Properties
+namespace CodeVerse.LogicTester.Gorgon.Properties
 {
 
 

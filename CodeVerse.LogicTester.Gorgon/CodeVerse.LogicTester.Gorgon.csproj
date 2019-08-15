@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{342735AF-03FA-4413-AD07-5D3306E31D46}</ProjectGuid>
+    <ProjectGuid>{C858DE88-34EC-4316-9F73-6E2D4689B7BD}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CodeVerse.LogicTesterGUI</RootNamespace>
-    <AssemblyName>CodeVerse.LogicTesterGUI</AssemblyName>
+    <RootNamespace>CodeVerse.LogicTester.Gorgon</RootNamespace>
+    <AssemblyName>CodeVerse.LogicTester.Gorgon</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,11 +32,54 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>CodeVerse.LogicTesterGUI.Program</StartupObject>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gorgon.Animation">
+      <HintPath>C:\Users\l.kiefer\Desktop\Gorgon_3.0.73.206\lib\Gorgon.Animation.dll</HintPath>
+    </Reference>
+    <Reference Include="Gorgon.Animation.Gorgon2D">
+      <HintPath>C:\Users\l.kiefer\Desktop\Gorgon_3.0.73.206\lib\Gorgon.Animation.Gorgon2D.dll</HintPath>
+    </Reference>
+    <Reference Include="Gorgon.Core">
+      <HintPath>C:\Users\l.kiefer\Desktop\Gorgon_3.0.73.206\lib\Gorgon.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Gorgon.FileSystem">
+      <HintPath>C:\Users\l.kiefer\Desktop\Gorgon_3.0.73.206\lib\Gorgon.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Gorgon.Graphics.Core">
+      <HintPath>C:\Users\l.kiefer\Desktop\Gorgon_3.0.73.206\lib\Gorgon.Graphics.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Gorgon.Graphics.Fonts">
+      <HintPath>C:\Users\l.kiefer\Desktop\Gorgon_3.0.73.206\lib\Gorgon.Graphics.Fonts.dll</HintPath>
+    </Reference>
+    <Reference Include="Gorgon.Graphics.Imaging">
+      <HintPath>C:\Users\l.kiefer\Desktop\Gorgon_3.0.73.206\lib\Gorgon.Graphics.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="Gorgon.Input">
+      <HintPath>C:\Users\l.kiefer\Desktop\Gorgon_3.0.73.206\lib\Gorgon.Input.dll</HintPath>
+    </Reference>
+    <Reference Include="Gorgon.IO.Gorgon2D">
+      <HintPath>C:\Users\l.kiefer\Desktop\Gorgon_3.0.73.206\lib\Gorgon.IO.Gorgon2D.dll</HintPath>
+    </Reference>
+    <Reference Include="Gorgon.Renderers.Gorgon2D">
+      <HintPath>C:\Users\l.kiefer\Desktop\Gorgon_3.0.73.206\lib\Gorgon.Renderers.Gorgon2D.dll</HintPath>
+    </Reference>
+    <Reference Include="Gorgon.Windows">
+      <HintPath>C:\Users\l.kiefer\Desktop\Gorgon_3.0.73.206\lib\Gorgon.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Mathematics.4.2.0\lib\net45\SharpDX.Mathematics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,16 +93,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DrawBox.cs">
+    <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DrawBox.Designer.cs">
-      <DependentUpon>DrawBox.cs</DependentUpon>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GorgonDrawer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="DrawBox.resx">
-      <DependentUpon>DrawBox.cs</DependentUpon>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -69,6 +114,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

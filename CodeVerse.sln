@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.Server", "CodeVer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeVerse.LogicTesterGUI", "CodeVerse.LogicTesterGUI\CodeVerse.LogicTesterGUI.csproj", "{342735AF-03FA-4413-AD07-5D3306E31D46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeVerse.LogicTester.Gorgon", "CodeVerse.LogicTester.Gorgon\CodeVerse.LogicTester.Gorgon.csproj", "{C858DE88-34EC-4316-9F73-6E2D4689B7BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{342735AF-03FA-4413-AD07-5D3306E31D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{342735AF-03FA-4413-AD07-5D3306E31D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{342735AF-03FA-4413-AD07-5D3306E31D46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C858DE88-34EC-4316-9F73-6E2D4689B7BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C858DE88-34EC-4316-9F73-6E2D4689B7BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C858DE88-34EC-4316-9F73-6E2D4689B7BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C858DE88-34EC-4316-9F73-6E2D4689B7BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

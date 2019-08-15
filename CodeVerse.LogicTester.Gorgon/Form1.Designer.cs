@@ -1,6 +1,6 @@
-﻿namespace CodeVerse.LogicTesterGUI
+﻿namespace CodeVerse.LogicTester.Gorgon
 {
-    partial class DrawBox
+    partial class Form1
     {
         /// <summary>
         /// Required designer variable.
@@ -28,31 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.mapScreen = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // mapScreen
-            // 
-            this.mapScreen.Location = new System.Drawing.Point(12, 12);
-            this.mapScreen.Name = "mapScreen";
-            this.mapScreen.Size = new System.Drawing.Size(760, 737);
-            this.mapScreen.TabIndex = 0;
-            // 
-            // DrawBox
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 761);
-            this.Controls.Add(this.mapScreen);
-            this.Name = "DrawBox";
-            this.Text = "DrawBox";
+            this.ClientSize = new System.Drawing.Size(800, 800);
+            this.Name = "Form1";
+            this.Text = "Form1";
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel mapScreen;
     }
 }
 
