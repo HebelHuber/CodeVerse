@@ -25,7 +25,7 @@ namespace CodeVerse.Common
             get { return Length; }
         }
 
-        public Vector normalized
+        public Vector Normalized
         {
             get
             {
@@ -35,7 +35,7 @@ namespace CodeVerse.Common
 
         public void Normalize()
         {
-            var tempVec = this.normalized;
+            var tempVec = this.Normalized;
             this.X = tempVec.X;
             this.Y = tempVec.Y;
         }

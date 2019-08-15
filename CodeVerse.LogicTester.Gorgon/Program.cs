@@ -114,6 +114,7 @@ namespace CodeVerse.LogicTester.Gorgon
 
             var FF = new GorgonFontFactory(_graphics);
             _font = FF.DefaultFont;
+            FF.Dispose();
             _renderer = new Gorgon2D(_graphics);
         }
         #endregion

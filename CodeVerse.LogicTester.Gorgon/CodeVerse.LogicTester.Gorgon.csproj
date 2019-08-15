@@ -42,37 +42,37 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Gorgon.Animation">
-      <HintPath>..\Gorgon.Animation.dll</HintPath>
+      <HintPath>.\Gorgon\Gorgon.Animation.dll</HintPath>
     </Reference>
     <Reference Include="Gorgon.Animation.Gorgon2D">
-      <HintPath>..\Gorgon.Animation.Gorgon2D.dll</HintPath>
+      <HintPath>.\Gorgon\Gorgon.Animation.Gorgon2D.dll</HintPath>
     </Reference>
     <Reference Include="Gorgon.Core">
-      <HintPath>..\Gorgon.Core.dll</HintPath>
+      <HintPath>.\Gorgon\Gorgon.Core.dll</HintPath>
     </Reference>
     <Reference Include="Gorgon.FileSystem">
-      <HintPath>..\Gorgon.FileSystem.dll</HintPath>
+      <HintPath>.\Gorgon\Gorgon.FileSystem.dll</HintPath>
     </Reference>
     <Reference Include="Gorgon.Graphics.Core">
-      <HintPath>..\Gorgon.Graphics.Core.dll</HintPath>
+      <HintPath>.\Gorgon\Gorgon.Graphics.Core.dll</HintPath>
     </Reference>
     <Reference Include="Gorgon.Graphics.Fonts">
-      <HintPath>..\Gorgon.Graphics.Fonts.dll</HintPath>
+      <HintPath>.\Gorgon\Gorgon.Graphics.Fonts.dll</HintPath>
     </Reference>
     <Reference Include="Gorgon.Graphics.Imaging">
-      <HintPath>..\Gorgon.Graphics.Imaging.dll</HintPath>
+      <HintPath>.\Gorgon\Gorgon.Graphics.Imaging.dll</HintPath>
     </Reference>
     <Reference Include="Gorgon.Input">
-      <HintPath>..\Gorgon.Input.dll</HintPath>
+      <HintPath>.\Gorgon\Gorgon.Input.dll</HintPath>
     </Reference>
     <Reference Include="Gorgon.IO.Gorgon2D">
-      <HintPath>..\Gorgon.IO.Gorgon2D.dll</HintPath>
+      <HintPath>.\Gorgon\Gorgon.IO.Gorgon2D.dll</HintPath>
     </Reference>
     <Reference Include="Gorgon.Renderers.Gorgon2D">
-      <HintPath>..\Gorgon.Renderers.Gorgon2D.dll</HintPath>
+      <HintPath>.\Gorgon\Gorgon.Renderers.Gorgon2D.dll</HintPath>
     </Reference>
     <Reference Include="Gorgon.Windows">
-      <HintPath>..\Gorgon.Windows.dll</HintPath>
+      <HintPath>.\Gorgon\Gorgon.Windows.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
