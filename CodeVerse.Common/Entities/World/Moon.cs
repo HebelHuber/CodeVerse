@@ -2,13 +2,13 @@
 {
     public class Moon : StaticEntity
     {
-        public static Moon Random(string name)
+        public static Moon Random(string name, float maxMapSize)
         {
             var newObj = new Moon();
-            newObj.pos = new Vector(StaticRandom.randomNormalizedFloat * 50f, StaticRandom.randomNormalizedFloat * 50f);
             newObj.name = name;
-            newObj.radius = StaticRandom.randomNormalizedFloat * 20f;
-            newObj.Gravity = 0f;
+            newObj.radius = StaticRandom.randomFloatInRange(3, 15);
+            newObj.mass = newObj.radius;
+            newObj.pos = StaticRandom.RandomVecInSquare(newObj.radius, maxMapSize - newObj.radius);
             return newObj;
         }
     }

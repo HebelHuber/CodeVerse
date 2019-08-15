@@ -4,8 +4,7 @@ using System.Text;
 
 namespace CodeVerse.Common
 {
-    public class PlayerCommand
+    public class ScannerContent
     {
-        public long targetID;
     }
 }

@@ -7,6 +7,6 @@ namespace CodeVerse.Common
     public abstract class MovingEntity : Entity
     {
         public Vector Velocity;
-        public float Weight;
+        public List<Vector> PositionHistory = new List<Vector>();
     }
 }

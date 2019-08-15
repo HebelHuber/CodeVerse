@@ -8,7 +8,7 @@ namespace CodeVerse.Common
 {
     public static class LogExtensions
     {
-        public static string ToStringWithProps<T>(this T inputO, bool onnewlines = false, int NumberDigits = 3, bool printclassname = true, int ClassNamePadding = 15)
+        public static string ToStringWithProps<T>(this T inputO, bool onnewlines = false, bool printclassname = true, int ClassNamePadding = 15)
         {
             Type type = inputO.GetType();
             FieldInfo[] fields = type.GetFields();
@@ -37,9 +37,9 @@ namespace CodeVerse.Common
                 var fieldVal = field.GetValue(instance);
 
                 if (field.FieldType == typeof(float))
-                    PerPropString.Add(field.Name + ":" + ((float)fieldVal).ToFixedLengthString(NumberDigits));
+                    PerPropString.Add(field.Name + ":" + ((float)fieldVal).ToFixedLengthString());
                 else if (field.FieldType == typeof(double))
-                    PerPropString.Add(field.Name + ":" + ((double)fieldVal).ToFixedLengthString(NumberDigits));
+                    PerPropString.Add(field.Name + ":" + ((double)fieldVal).ToFixedLengthString());
                 else
                     PerPropString.Add(field.Name + ":" + fieldVal);
             });
@@ -51,9 +51,9 @@ namespace CodeVerse.Common
                     var propVal = property.GetValue(instance, null);
 
                     if (property.PropertyType == typeof(float))
-                        PerPropString.Add(property.Name + ":" + ((float)propVal).ToFixedLengthString(NumberDigits));
+                        PerPropString.Add(property.Name + ":" + ((float)propVal).ToFixedLengthString());
                     else if (property.PropertyType == typeof(double))
-                        PerPropString.Add(property.Name + ":" + ((double)propVal).ToFixedLengthString(NumberDigits));
+                        PerPropString.Add(property.Name + ":" + ((double)propVal).ToFixedLengthString());
                     else
                         PerPropString.Add(property.Name + ":" + propVal);
                 }
@@ -65,24 +65,34 @@ namespace CodeVerse.Common
                 return String.Join(" ", PerPropString.ToArray());
         }
 
-        public static string ToFixedLengthString(this float val, int length)
+        public static string ToFixedLengthString(this float val, int decimals = 3, int numbersBeforeComma = 3)
         {
             // sehr sehr ekelige sache hier
             // Pfui Lukas! Pfui!
 
-            string outstring = "N" + length.ToString();
+            string outstring = "N" + decimals.ToString();
             outstring = val.ToString(outstring);
 
-            if (val < 10) outstring = "000" + outstring;
-            else if (val < 100) outstring = "00" + outstring;
-            else if (val < 1000) outstring = "0" + outstring;
+            if (numbersBeforeComma != 0)
+            {
+                if (val > 0)
+                {
+                    while (outstring.Length < decimals + numbersBeforeComma + 1)
+                        outstring = outstring.Insert(0, "0");
+                }
+                else
+                {
+                    while (outstring.Length < decimals + numbersBeforeComma + 1)
+                        outstring = outstring.Insert(1, "0");
+                }
+            }
 
             return outstring;
         }
 
-        public static string ToFixedLengthString(this double val, int length)
+        public static string ToFixedLengthString(this double val, int decimals = 3, int numbersBeforeComma = 3)
         {
-            return Convert.ToSingle(val).ToFixedLengthString(length);
+            return Convert.ToSingle(val).ToFixedLengthString(decimals, numbersBeforeComma);
         }
 
         /*

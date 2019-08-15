@@ -1,92 +1,163 @@
-﻿using CodeVerse.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CodeVerse.Common;
 
 namespace CodeVerse.Logic
 {
-    public class DefaultSimulator : ICanSimulate
+    public class DefaultSimulator : Simulator
     {
-        private List<Entity> entities;
+        private int entitycountmult;
 
-        public List<Entity> GenerateMap(int seed = 0)
+        public DefaultSimulator(int seed = 0, float mapsize = 1000f, bool debugmode = false) : base(seed, mapsize, debugmode)
         {
-            if (seed == 0)
-                StaticRandom.SetRandomSeed();
-            else
-                StaticRandom.SetSeed(seed);
-
+            this.entitycountmult = Math.Max(1, Convert.ToInt32(mapsize / 1000f));
             entities = new List<Entity>();
-
-            // generate a random map of static objects
-
-            // some Suns
-            int SunCount = StaticRandom.randomInt(1, 3);
-            for (int i = 0; i < SunCount; i++)
-                entities.Add(Sun.Random("Sun_" + i));
-
-            // some Planets
-            int PlanetCount = StaticRandom.randomInt(3, 10);
-            for (int i = 0; i < PlanetCount; i++)
-                entities.Add(Planet.Random("Planet_" + i));
-
-            // some Moons
-            int MoonCount = StaticRandom.randomInt(10, 20);
-            for (int i = 0; i < MoonCount; i++)
-                entities.Add(Moon.Random("Moon_" + i));
-
-            // add a ship and a bullet
-            entities.Add(Ship.Random("Bob", "Ship_0"));
-            entities.Add(Bullet.Random("Ship_0"));
-
-            return entities;
         }
 
-        public List<Entity> Simulate(List<PlayerCommand> input)
+        public override void GenerateMap()
         {
-            // handle user ticks here
-            foreach (var cmd in input)
+            Console.Write("Generating map...");
+
+            #region Hardcoded maps
+            // here we have an example of a hardcoded map for a specific seed
+            if (seed == -1)
             {
-                var targetIndex = entities.FindIndex(q => q.name == cmd.targetID);
+                float leftX = (mapsize / 4f);
+                float rightX = (mapsize / 4f) * 3f;
+                float upperY = (mapsize / 4f);
+                float lowerY = (mapsize / 4f) * 3f;
+                entities.Add(new Sun("Sun_10", 10f, new Vector(leftX, upperY)));
+                entities.Add(new Sun("Sun_50", 50f, new Vector(rightX, upperY)));
+                entities.Add(new Sun("Sun_75", 75f, new Vector(leftX, lowerY)));
+                entities.Add(new Sun("Sun_100", 100f, new Vector(rightX, lowerY)));
 
-                if (targetIndex != -1)
+                Vector spawnpoint = new Vector((mapsize / 4f) * 2f, (mapsize / 4f) * 3f);
+                entities.Add(new Ship(0, "Bob", "Lukas", 100, 100, spawnpoint, Vector.FromAngleLength(210, 10)));
+
+                return;
+            }
+            else if (seed == -2)
+            {
+                Vector center = new Vector((mapsize / 4f) * 2f, (mapsize / 4f) * 2f);
+                var sun = new Sun("Sun_Main_1.0", 80f, center);
+                entities.Add(sun);
+
+                float dist = 1.2f;
+                for (int i = 0; i < 10; i++)
                 {
-                    Ship target = (Ship)entities[targetIndex];
+                    var shipPos = new Vector(center.X - (sun.radius * dist), center.Y);
+                    entities.Add(new Ship(i, dist.ToString(), "Lukas", 100, 100, shipPos, new Vector(0, 1f + dist)));
+                    dist += 0.5f;
+                }
 
-                    if (cmd is MoveCommand)
+                return;
+            }
+            #endregion
+
+            // generate a random map
+
+            // some Suns
+            int SunCount = StaticRandom.randomInt(1 * entitycountmult, 2 * entitycountmult);
+            for (int i = 0; i < SunCount; i++)
+            {
+                var e = Sun.Random("Sun_" + i, mapsize);
+
+                while (e.CollidesWithMultiple(entities).Count != 0)
+                    e.pos = StaticRandom.RandomVecInSquare(e.radius, mapsize - e.radius);
+
+                entities.Add(e);
+            }
+
+            // some Planets
+            int PlanetCount = StaticRandom.randomInt(1 * entitycountmult, 5 * entitycountmult);
+            for (int i = 0; i < PlanetCount; i++)
+            {
+                var e = Planet.Random("Planet_" + i, mapsize);
+
+                while (e.CollidesWithMultiple(entities).Count != 0)
+                    e.pos = StaticRandom.RandomVecInSquare(e.radius, mapsize - e.radius);
+
+                entities.Add(e);
+            }
+
+            // some Moons
+            int MoonCount = StaticRandom.randomInt(1 * entitycountmult, 10 * entitycountmult);
+            for (int i = 0; i < MoonCount; i++)
+            {
+                var e = Moon.Random("Moon_" + i, mapsize);
+
+                while (e.CollidesWithMultiple(entities).Count != 0)
+                    e.pos = StaticRandom.RandomVecInSquare(e.radius, mapsize - e.radius);
+
+                entities.Add(e);
+            }
+
+            // some ships
+            int ShipCount = StaticRandom.randomInt(5 * entitycountmult, 20 * entitycountmult);
+            for (int i = 0; i < ShipCount; i++)
+            {
+                var ship = Ship.Random(i, "Bob", "Ship_" + i, mapsize);
+                while (ship.CollidesWithMultiple(entities).Count != 0)
+                {
+                    ship.pos = StaticRandom.RandomVecInSquare(ship.radius, mapsize - ship.radius);
+                }
+                entities.Add(ship);
+            }
+
+            var ships = entities.Where(q => q is Ship).Select(q => q as Ship).ToList();
+
+            // some bullets
+            foreach (var ship in ships)
+            {
+                int bulletsPerShip = 4;
+                for (int i = 0; i < bulletsPerShip; i++)
+                {
+                    Vector vel = Vector.FromAngleLength(i * (360f / bulletsPerShip), 5f);
+                    var bullet = new Bullet("blt", ship.ID, ship.pos + vel, ship.Velocity + vel);
+                    bullet.name = ship.name + "'s bullet";
+                    entities.Add(bullet);
+                }
+            }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Done (" + entities.Count + "entities)");
+            Console.ResetColor();
+        }
+
+        protected override List<ScannerContent> SimulateInternal(List<PlayerCommand> input = null)
+        {
+            if (input != null)
+            {
+                // handle user ticks here
+                foreach (var cmd in input)
+                {
+                    var targetID = entities.FindIndex(q => q.ID == cmd.targetID);
+
+                    if (targetID != -1)
                     {
-                        MoveCommand parsedCmd = (MoveCommand)cmd;
-                        target.Velocity += parsedCmd.Force;
-                    }
-                    if (cmd is ShootCommand)
-                    {
-                        ShootCommand parsedCmd = (ShootCommand)cmd;
-                        var bullet = new Bullet();
+                        Ship target = (Ship)entities[targetID];
 
-                        string uniqueBulletName = target.name + "_bullet_";
-
-                        var bulletsfromsameship = entities
-                            .Where(q => q is Bullet)
-                            .Select(q => q as Bullet)
-                            .Where(q => q.origin == target.name)
-                            .Select(q => q.name)
-                            .ToList();
-
-                        int indexer = 0;
-                        while (bulletsfromsameship.Contains(uniqueBulletName + indexer.ToString()))
-                            indexer++;
-
-                        bullet.name = uniqueBulletName + indexer.ToString();
-
-                        bullet.origin = target.name;
-                        bullet.Velocity = target.Velocity + (parsedCmd.Direction * parsedCmd.Power);
-                        bullet.pos = target.pos;
-                        entities.Add(bullet);
-                    }
-                    if (cmd is ShieldCommand)
-                    {
-                        throw new NotImplementedException();
+                        if (cmd is MoveCommand)
+                        {
+                            MoveCommand parsedCmd = (MoveCommand)cmd;
+                            target.Velocity += parsedCmd.Force;
+                        }
+                        if (cmd is ShootCommand)
+                        {
+                            ShootCommand parsedCmd = (ShootCommand)cmd;
+                            var bullet = new Bullet();
+                            bullet.name = target.name + "'s bullet";
+                            bullet.originID = target.ID;
+                            bullet.Velocity = target.Velocity + (parsedCmd.Direction * parsedCmd.Power);
+                            bullet.pos = target.pos;
+                            entities.Add(bullet);
+                        }
+                        if (cmd is ShieldCommand)
+                        {
+                            throw new NotImplementedException();
+                        }
                     }
                 }
             }
@@ -96,52 +167,69 @@ namespace CodeVerse.Logic
                 .Select(q => q as MovingEntity)
                 .ToList();
 
-            foreach (var item in Movables)
-                ApplyWorldForces(item);
+            foreach (var movable in Movables)
+                ApplyWorldForces(movable);
 
-            foreach (var item in Movables)
-                MoveFromVelocity(item);
+            foreach (var movable in Movables)
+            {
+                if (movable.PositionHistory.Count > 50)
+                    movable.PositionHistory.RemoveAt(0);
 
-            return entities;
+                movable.PositionHistory.Add(movable.pos);
+                movable.pos += movable.Velocity;
+            }
+
+            var CollidedMovables = new List<Entity>();
+            foreach (var movable in Movables)
+            {
+                var collisions = movable.CollidesWithMultiple(entities);
+
+                if (collisions.Count > 0)
+                {
+                    CollidedMovables.Add(movable);
+
+                    if (movable is Ship)
+                        Console.WriteLine(movable.name + " died colliding with " + collisions[0].name);
+                }
+            }
+
+            foreach (var item in CollidedMovables)
+                entities.Remove(item);
+
+            return new List<ScannerContent>();
         }
 
         private void ApplyWorldForces(MovingEntity unit)
         {
+            // was nehmen wir alles für Gravity? alles oder alles static oder nur sonnen?
+
+            //var Gravitationals = entities
+            //    .Where(q => q != unit)
+            //    .ToList();
+
             var Gravitationals = entities
-                .Where(q => q is StaticEntity)
-                .Select(q => q as StaticEntity)
-                .Where(q => q.Gravity > 0)
+                .Where(q => q is StaticEntity && q != unit)
                 .ToList();
+
+            //var Gravitationals = entities
+            //    .Where(q => q is Sun && q != unit)
+            //    .ToList();
 
             foreach (var grav in Gravitationals)
             {
-                Vector offset = Vector.VecFromTo(grav.pos, unit.pos);
-                float strength = grav.Gravity;
+                Vector localVec = Vector.VecFromTo(grav.pos, unit.pos);
 
-                // replace this later with "open end" method
-                float appliedGravityPower = offset.Length.Remap(0, 5000, 1, 0, clamp: true) * strength;
+                // now for the real shit, real physics formula
+                // Force = Gravitational Constant * Mass1 * Mass2 / distance²
+                // Gravitational Constant is 6.67408 × 10^(-11) 
+                float GravConstant = 0.0000000000667408f;
+                GravConstant *= 1000000000f;
+                float appliedGravityPower = GravConstant * ((grav.mass * unit.mass) / (localVec.Length * localVec.Length));
 
-                unit.Velocity += offset * appliedGravityPower;
+                var GravVector = localVec * appliedGravityPower;
+
+                unit.Velocity += GravVector;
             }
-        }
-
-        private void MoveFromVelocity(MovingEntity unit)
-        {
-            unit.pos += unit.Velocity;
-        }
-
-        public List<Entity> Wipe()
-        {
-            // kill everything non-static
-            var KillList = entities
-                .Where(q => q is MovingEntity)
-                .Select(q => q as MovingEntity)
-                .ToList();
-
-            foreach (var item in KillList)
-                entities.Remove(item);
-
-            return entities;
         }
     }
 }
