@@ -19,7 +19,7 @@ namespace CodeVerse.LogicTesterGUI
     {
         private Simulator sim;
         private int Ticks = 0;
-        static private List<Entity> ents;
+        private List<Entity> ents;
 
         public DrawBox()
         {
@@ -42,10 +42,16 @@ namespace CodeVerse.LogicTesterGUI
                 ents = sim.GetDebugEntities();
                 //LogToConsole(ents);
 
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+
                 if (InvokeRequired)
                     Invoke(new MethodInvoker(mapScreen.Refresh));
                 else
                     mapScreen.Refresh();
+
+                stopwatch.Stop();
+                Console.WriteLine("Draw Time: {0}ms", stopwatch.ElapsedMilliseconds);
 
 
                 Ticks++;
@@ -65,6 +71,8 @@ namespace CodeVerse.LogicTesterGUI
         private void mapScreenPaintEventHandler(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+
+            bool DrawHistoryLines = true;
 
             foreach (var mapitem in ents)
             {
@@ -86,13 +94,15 @@ namespace CodeVerse.LogicTesterGUI
                 else if (mapitem is Ship)
                 {
                     var ship = (Ship)mapitem;
-                    DrawHistory(g, ship, Pens.Red);
+                    if (DrawHistoryLines) DrawHistory(g, ship, Pens.Red);
                     DrawFilledCircle(g, ship.pos, ship.radius, Pens.Black, Pens.Cyan, ship.name);
                 }
                 else if (mapitem is Bullet)
                 {
                     var bullet = (Bullet)mapitem;
-                    DrawHistory(g, bullet, Pens.Red);
+
+                    if (DrawHistoryLines) DrawHistory(g, bullet, Pens.Blue);
+
                     DrawFilledCircle(g, bullet.pos, bullet.radius, Pens.Black, Pens.Magenta);
                 }
             }

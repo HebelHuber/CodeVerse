@@ -100,17 +100,17 @@ namespace CodeVerse.Logic
             }
 
             // some bullets
-            //int BulletCount = StaticRandom.randomInt(250, 500);
-            //for (int i = 0; i < BulletCount; i++)
-            //{
-            //    var bullet = Bullet.Random("Ship_0", mapsize);
-            //    while (bullet.CollidesWithMultiple(entities).Count != 0)
-            //        bullet.pos = StaticRandom.RandomVecInSquare(bullet.radius, mapsize - bullet.radius);
-            //    entities.Add(bullet);
-            //}
+            int BulletCount = StaticRandom.randomInt(10, 50);
+            for (int i = 0; i < BulletCount; i++)
+            {
+                var bullet = Bullet.Random("Ship_0", mapsize);
+                while (bullet.CollidesWithMultiple(entities).Count != 0)
+                    bullet.pos = StaticRandom.RandomVecInSquare(bullet.radius, mapsize - bullet.radius);
+                entities.Add(bullet);
+            }
         }
 
-        public override List<ScannerContent> Simulate(List<PlayerCommand> input = null)
+        protected override List<ScannerContent> SimulateInternal(List<PlayerCommand> input = null)
         {
             if (input != null)
             {
