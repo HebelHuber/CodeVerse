@@ -8,13 +8,13 @@ namespace CodeVerse.Common
     {
         public string origin;
 
-        public static Bullet Random(string origin)
+        public static Bullet Random(string origin, float mapsize)
         {
             var bullet = new Bullet();
             bullet.name = "Bullet_0";
             bullet.origin = origin;
-            bullet.pos = new Vector();
-            bullet.Velocity = new Vector(500, 100);
+            bullet.pos = StaticRandom.RandomVecInSquare(0, mapsize);
+            bullet.Velocity = new Vector(500, 100) * 0;
             bullet.radius = 1f;
             bullet.Weight = 50f;
             return bullet;

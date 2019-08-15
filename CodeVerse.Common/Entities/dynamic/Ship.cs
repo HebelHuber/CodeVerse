@@ -6,18 +6,18 @@
         public float HP;
         public float Energy;
 
-        public static Ship Random(string owner, string name)
+        public static Ship Random(string owner, string name, float maxMapSize)
         {
-            var ship = new Ship();
-            ship.Velocity = new Vector();
-            ship.name = name;
-            ship.radius = 5f;
-            ship.Owner = owner;
-            ship.HP = 100;
-            ship.Energy = 100;
-            ship.Weight = 500f;
-            ship.pos = new Vector(StaticRandom.randomNormalizedFloat * 50f, StaticRandom.randomNormalizedFloat * 50f);
-            return ship;
+            var newObj = new Ship();
+            newObj.name = name;
+            newObj.Owner = owner;
+            newObj.HP = 100;
+            newObj.Energy = 100;
+            newObj.Weight = 500f;
+            newObj.radius = 5f;
+            newObj.pos = StaticRandom.RandomVecInSquare(newObj.radius, maxMapSize - newObj.radius);
+            newObj.Velocity = new Vector(0, 0);
+            return newObj;
         }
     }
 }

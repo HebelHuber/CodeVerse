@@ -2,13 +2,14 @@
 {
     public class Sun : StaticEntity
     {
-        public static Sun Random(string name)
+        public static Sun Random(string name, float maxMapSize)
         {
             var newObj = new Sun();
-            newObj.pos = new Vector(StaticRandom.randomNormalizedFloat * 50f, StaticRandom.randomNormalizedFloat * 50f);
             newObj.name = name;
-            newObj.radius = StaticRandom.randomNormalizedFloat * 20f;
-            newObj.Gravity = StaticRandom.randomNormalizedFloat * 10f;
+            newObj.radius = StaticRandom.randomFloatInRange(50, 80);
+            newObj.pos = StaticRandom.RandomVecInSquare(newObj.radius, maxMapSize - newObj.radius);
+            newObj.Gravity = StaticRandom.randomNormalizedFloat * 1f;
+
             return newObj;
         }
     }

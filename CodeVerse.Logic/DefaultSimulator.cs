@@ -9,9 +9,22 @@ namespace CodeVerse.Logic
     public class DefaultSimulator : ICanSimulate
     {
         private List<Entity> entities;
-
-        public List<Entity> GenerateMap(int seed = 0)
+        public List<Entity> GetDebugEntities()
         {
+            if (EntitiesArePublic)
+                return entities;
+            else
+                throw new Exception("Simulator not in debug mode, no access to entities.");
+        }
+
+        public bool IsDebugMode() { return EntitiesArePublic; }
+
+        private bool EntitiesArePublic;
+
+        public void GenerateMap(int seed = 0, bool PublicEntities = false)
+        {
+            this.EntitiesArePublic = PublicEntities;
+
             if (seed == 0)
                 StaticRandom.SetRandomSeed();
             else
@@ -20,73 +33,75 @@ namespace CodeVerse.Logic
             entities = new List<Entity>();
 
             // generate a random map of static objects
+            float mapsize = 500f;
 
             // some Suns
-            int SunCount = StaticRandom.randomInt(1, 3);
+            int SunCount = StaticRandom.randomInt(1, 2);
             for (int i = 0; i < SunCount; i++)
-                entities.Add(Sun.Random("Sun_" + i));
+                entities.Add(Sun.Random("Sun_" + i, mapsize));
 
             // some Planets
             int PlanetCount = StaticRandom.randomInt(3, 10);
             for (int i = 0; i < PlanetCount; i++)
-                entities.Add(Planet.Random("Planet_" + i));
+                entities.Add(Planet.Random("Planet_" + i, mapsize));
 
             // some Moons
             int MoonCount = StaticRandom.randomInt(10, 20);
             for (int i = 0; i < MoonCount; i++)
-                entities.Add(Moon.Random("Moon_" + i));
+                entities.Add(Moon.Random("Moon_" + i, mapsize));
 
             // add a ship and a bullet
-            entities.Add(Ship.Random("Bob", "Ship_0"));
-            entities.Add(Bullet.Random("Ship_0"));
-
-            return entities;
+            entities.Add(Ship.Random("Bob", "Ship_0", mapsize));
+            entities.Add(Bullet.Random("Ship_0", mapsize));
         }
 
-        public List<Entity> Simulate(List<PlayerCommand> input)
+        public List<ScannerContent> Simulate(List<PlayerCommand> input = null)
         {
-            // handle user ticks here
-            foreach (var cmd in input)
+            if (input != null)
             {
-                var targetIndex = entities.FindIndex(q => q.name == cmd.targetID);
-
-                if (targetIndex != -1)
+                // handle user ticks here
+                foreach (var cmd in input)
                 {
-                    Ship target = (Ship)entities[targetIndex];
+                    var targetIndex = entities.FindIndex(q => q.name == cmd.targetID);
 
-                    if (cmd is MoveCommand)
+                    if (targetIndex != -1)
                     {
-                        MoveCommand parsedCmd = (MoveCommand)cmd;
-                        target.Velocity += parsedCmd.Force;
-                    }
-                    if (cmd is ShootCommand)
-                    {
-                        ShootCommand parsedCmd = (ShootCommand)cmd;
-                        var bullet = new Bullet();
+                        Ship target = (Ship)entities[targetIndex];
 
-                        string uniqueBulletName = target.name + "_bullet_";
+                        if (cmd is MoveCommand)
+                        {
+                            MoveCommand parsedCmd = (MoveCommand)cmd;
+                            target.Velocity += parsedCmd.Force;
+                        }
+                        if (cmd is ShootCommand)
+                        {
+                            ShootCommand parsedCmd = (ShootCommand)cmd;
+                            var bullet = new Bullet();
 
-                        var bulletsfromsameship = entities
-                            .Where(q => q is Bullet)
-                            .Select(q => q as Bullet)
-                            .Where(q => q.origin == target.name)
-                            .Select(q => q.name)
-                            .ToList();
+                            string uniqueBulletName = target.name + "_bullet_";
 
-                        int indexer = 0;
-                        while (bulletsfromsameship.Contains(uniqueBulletName + indexer.ToString()))
-                            indexer++;
+                            var bulletsfromsameship = entities
+                                .Where(q => q is Bullet)
+                                .Select(q => q as Bullet)
+                                .Where(q => q.origin == target.name)
+                                .Select(q => q.name)
+                                .ToList();
 
-                        bullet.name = uniqueBulletName + indexer.ToString();
+                            int indexer = 0;
+                            while (bulletsfromsameship.Contains(uniqueBulletName + indexer.ToString()))
+                                indexer++;
 
-                        bullet.origin = target.name;
-                        bullet.Velocity = target.Velocity + (parsedCmd.Direction * parsedCmd.Power);
-                        bullet.pos = target.pos;
-                        entities.Add(bullet);
-                    }
-                    if (cmd is ShieldCommand)
-                    {
-                        throw new NotImplementedException();
+                            bullet.name = uniqueBulletName + indexer.ToString();
+
+                            bullet.origin = target.name;
+                            bullet.Velocity = target.Velocity + (parsedCmd.Direction * parsedCmd.Power);
+                            bullet.pos = target.pos;
+                            entities.Add(bullet);
+                        }
+                        if (cmd is ShieldCommand)
+                        {
+                            throw new NotImplementedException();
+                        }
                     }
                 }
             }
@@ -102,7 +117,7 @@ namespace CodeVerse.Logic
             foreach (var item in Movables)
                 MoveFromVelocity(item);
 
-            return entities;
+            return new List<ScannerContent>();
         }
 
         private void ApplyWorldForces(MovingEntity unit)
@@ -121,27 +136,16 @@ namespace CodeVerse.Logic
                 // replace this later with "open end" method
                 float appliedGravityPower = offset.Length.Remap(0, 5000, 1, 0, clamp: true) * strength;
 
-                unit.Velocity += offset * appliedGravityPower;
+                var GravVector = offset * appliedGravityPower * 0.001f;
+                Console.WriteLine("Force from " + grav.name + " on " + unit.name + ": " + GravVector);
+
+                unit.Velocity += GravVector;
             }
         }
 
         private void MoveFromVelocity(MovingEntity unit)
         {
             unit.pos += unit.Velocity;
-        }
-
-        public List<Entity> Wipe()
-        {
-            // kill everything non-static
-            var KillList = entities
-                .Where(q => q is MovingEntity)
-                .Select(q => q as MovingEntity)
-                .ToList();
-
-            foreach (var item in KillList)
-                entities.Remove(item);
-
-            return entities;
         }
     }
 }
