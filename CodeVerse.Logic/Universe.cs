@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using CodeVerse.Common;
+using CodeVerse.Common.Commands;
+using CodeVerse.Common.data;
 using CodeVerse.Logic.Maps;
 using CodeVerse.Logic.Simulation;
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CodeVerse.Common;
+using CodeVerse.Common.Commands;
+using CodeVerse.Common.data;
 
 namespace CodeVerse.Logic.Simulation
 {

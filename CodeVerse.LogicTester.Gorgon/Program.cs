@@ -36,8 +36,9 @@ namespace CodeVerse.LogicTester.Gorgon
             screenMin = Math.Min(form.ClientSize.Height, form.ClientSize.Width); // muss der drawer nachher wissen
 
             mapsize = 2000f; // muss der drawer nachher wissen
-            //var map = new Logic.Maps.RandomMap(mapsize);
-            var map = new Logic.Maps.CenterSun(mapsize);
+            var map = new Logic.Maps.RandomMap(mapsize);
+            //var map = new Logic.Maps.CenterSun(mapsize);
+            //var map = new Logic.Maps.FourSuns(mapsize);
             universe = new Universe(new Guid(), new Logic.Simulation.DefaultSimulator(), map);
 
             Task.Run(() => { KeepTickin(); });
@@ -49,8 +50,8 @@ namespace CodeVerse.LogicTester.Gorgon
             }
             catch (Exception ex)
             {
+                ex.Catch(_ => GorgonDialogs.ErrorBox(null, ex));
                 throw ex;
-                //ex.Catch(_ => GorgonDialogs.ErrorBox(null, ex));
             }
             finally
             {
@@ -62,7 +63,7 @@ namespace CodeVerse.LogicTester.Gorgon
             }
         }
 
-        private static void KeepTickin(float simFps = 5)
+        private static void KeepTickin(float simFps = 50)
         {
             Thread.Sleep(2500);
 
