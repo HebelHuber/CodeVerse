@@ -40,7 +40,7 @@ namespace CodeVerse.LogicTester.Gorgon
                 screenMin = Math.Min(form.ClientSize.Height, form.ClientSize.Width); // muss der drawer nachher wissen
                 mapsize = 2000f; // muss der drawer nachher wissen
 
-                sim = new DefaultSimulator(seed: 551000, mapsize: mapsize, debugmode: true);
+                sim = new DefaultSimulator(seed: 6652, mapsize: mapsize, debugmode: true);
                 sim.GenerateMap();
 
                 ents = sim.GetDebugEntities(); // muss der drawer nachher wissen
@@ -56,6 +56,7 @@ namespace CodeVerse.LogicTester.Gorgon
             }
             finally
             {
+                _FF?.Dispose();
                 _font?.Dispose();
                 _renderer?.Dispose();
                 _screen?.Dispose();
@@ -63,7 +64,7 @@ namespace CodeVerse.LogicTester.Gorgon
             }
         }
 
-        private static void KeepTickin(float simFps = 25)
+        private static void KeepTickin(float simFps = 50)
         {
             Thread.Sleep(2500);
 
@@ -80,6 +81,7 @@ namespace CodeVerse.LogicTester.Gorgon
         #region Rendering
         private static GorgonGraphics _graphics;
         private static GorgonSwapChain _screen;
+        private static GorgonFontFactory _FF;
         private static Gorgon2D _renderer;
         private static GorgonFont _font;
 
@@ -112,9 +114,8 @@ namespace CodeVerse.LogicTester.Gorgon
                 Format = BufferFormat.R8G8B8A8_UNorm
             });
 
-            var FF = new GorgonFontFactory(_graphics);
-            _font = FF.DefaultFont;
-            FF.Dispose();
+            _FF = new GorgonFontFactory(_graphics);
+            _font = _FF.DefaultFont;
             _renderer = new Gorgon2D(_graphics);
         }
         #endregion

@@ -48,7 +48,7 @@ namespace CodeVerse.Logic
                 for (int i = 0; i < 10; i++)
                 {
                     var shipPos = new Vector(center.X - (sun.radius * dist), center.Y);
-                    entities.Add(new Ship(i, dist.ToString(), "Lukas", 100, 100, shipPos, new Vector(0, 1f + dist)));
+                    entities.Add(new Ship(i, dist.ToString(), "Lukas", 100, 100, shipPos, new Vector(0, (dist * 0.5f))));
                     dist += 0.5f;
                 }
 
@@ -172,7 +172,7 @@ namespace CodeVerse.Logic
 
             foreach (var movable in Movables)
             {
-                if (movable.PositionHistory.Count > 50)
+                if (movable.PositionHistory.Count > 250)
                     movable.PositionHistory.RemoveAt(0);
 
                 movable.PositionHistory.Add(movable.pos);
@@ -228,7 +228,7 @@ namespace CodeVerse.Logic
 
                 var GravVector = localVec * appliedGravityPower;
 
-                unit.Velocity += GravVector;
+                unit.Velocity += GravVector / unit.mass;
             }
         }
     }
