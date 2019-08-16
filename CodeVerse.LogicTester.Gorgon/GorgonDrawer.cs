@@ -20,18 +20,16 @@ namespace CodeVerse.LogicTester.Gorgon
         private static float displayFactor;
         private static Gorgon2D _renderer;
         private static GorgonFont _font;
-        private static List<Entity> _ents;
 
         internal static void DrawEntities(Gorgon2D renderer, List<Entity> ents, float mapSize, int screenmin, GorgonFont font)
         {
-            GorgonDrawer._ents = new List<Entity>(ents);
             GorgonDrawer._renderer = renderer;
             GorgonDrawer._font = font;
             displayFactor = screenmin / mapSize;
 
             bool DrawHistoryLines = true;
 
-            foreach (var mapitem in _ents)
+            foreach (var mapitem in ents)
             {
                 if (mapitem is Sun)
                 {
