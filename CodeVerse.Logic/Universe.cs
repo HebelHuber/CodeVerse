@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using CodeVerse.Common;
 using CodeVerse.Common.Commands;
@@ -19,6 +20,8 @@ namespace CodeVerse.Logic
         {
             get
             {
+                // return a copy so it can't be modified outside,
+                // also for thread safetiy when drawing
                 return new List<Entity>(_sim.entities);
             }
         }
@@ -45,8 +48,10 @@ namespace CodeVerse.Logic
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            _sim.Simulate(input);
-            var result = _sim.Scan(input);
+
+            _sim.Simulate(input.Where(q => !(q is ScanCommand)).ToList());
+            var result = _sim.Scan(input.Where(q => q is ScanCommand).ToList());
+
             stopwatch.Stop();
 
             if (stopwatch.ElapsedMilliseconds > 50)
