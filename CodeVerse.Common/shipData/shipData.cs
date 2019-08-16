@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CodeVerse.Common
 {
-    public class ScannerContent
+    public class shipData
     {
     }
 }

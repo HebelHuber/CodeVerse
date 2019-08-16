@@ -20,39 +20,37 @@ namespace CodeVerse.LogicTester.Gorgon
 {
     static class Program
     {
-        private static DefaultSimulator sim;
-        private static List<Entity> ents;
+        private static Universe universe;
         private static float mapsize;
         private static int screenMin;
 
         [STAThread]
         static void Main()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            var form = new Form1();
+            Initialize(form);
+
+            screenMin = Math.Min(form.ClientSize.Height, form.ClientSize.Width); // muss der drawer nachher wissen
+
+            mapsize = 2000f; // muss der drawer nachher wissen
+            //var map = new Logic.Maps.RandomMap(mapsize);
+            var map = new Logic.Maps.CenterSun(mapsize);
+            universe = new Universe(new Guid(), new Logic.Simulation.DefaultSimulator(), map);
+
+            Task.Run(() => { KeepTickin(); });
+
             try
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-
-                var form = new Form1();
-                Initialize(form);
-
-
-                screenMin = Math.Min(form.ClientSize.Height, form.ClientSize.Width); // muss der drawer nachher wissen
-                mapsize = 2000f; // muss der drawer nachher wissen
-
-                sim = new DefaultSimulator(seed: 6652, mapsize: mapsize, debugmode: true);
-                sim.GenerateMap();
-
-                ents = sim.GetDebugEntities(); // muss der drawer nachher wissen
-
-                Task.Run(() => { KeepTickin(); });
-
                 GorgonApplication.AllowBackground = true;
                 GorgonApplication.Run(form, RenderLoop);
             }
             catch (Exception ex)
             {
-                ex.Catch(_ => GorgonDialogs.ErrorBox(null, ex));
+                throw ex;
+                //ex.Catch(_ => GorgonDialogs.ErrorBox(null, ex));
             }
             finally
             {
@@ -64,7 +62,7 @@ namespace CodeVerse.LogicTester.Gorgon
             }
         }
 
-        private static void KeepTickin(float simFps = 50)
+        private static void KeepTickin(float simFps = 5)
         {
             Thread.Sleep(2500);
 
@@ -72,8 +70,7 @@ namespace CodeVerse.LogicTester.Gorgon
 
             while (true)
             {
-                sim.Simulate();
-                ents = sim.GetDebugEntities();
+                universe.Simulate();
                 Thread.Sleep(fpsAsMilliseconds);
             }
         }
@@ -94,7 +91,7 @@ namespace CodeVerse.LogicTester.Gorgon
 
             _renderer.Begin();
 
-            GorgonDrawer.DrawEntities(_renderer, ents, mapsize, screenMin, _font);
+            GorgonDrawer.DrawEntities(_renderer, universe.entities, mapsize, screenMin, _font);
 
             _renderer.End();
 
