@@ -49,8 +49,7 @@ namespace CodeVerse.Logic
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            _sim.Simulate(input.Where(q => !(q is ScanCommand)).ToList());
-            var result = _sim.Scan(input.Where(q => q is ScanCommand).ToList());
+            var result = _sim.Simulate(input);
 
             stopwatch.Stop();
 

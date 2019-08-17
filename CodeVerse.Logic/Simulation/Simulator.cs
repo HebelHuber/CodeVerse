@@ -16,7 +16,6 @@ namespace CodeVerse.Logic.Simulation
             entities = map;
         }
 
-        public abstract void Simulate(List<PlayerCommand> input = null);
-        public abstract List<shipData> Scan(List<PlayerCommand> input = null);
+        public abstract List<shipData> Simulate(List<PlayerCommand> input = null);
     }
 }

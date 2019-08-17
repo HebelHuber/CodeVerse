@@ -10,16 +10,27 @@ namespace CodeVerse.Logic.Simulation
 {
     public class DefaultSimulator : Simulator
     {
-        public override List<shipData> Scan(List<PlayerCommand> input = null)
+        public override List<shipData> Simulate(List<PlayerCommand> input = null)
         {
-            if (input == null || input.Count == 0)
-                return new List<shipData>();
+            /*
+             * 
+             * Order should be:
+             * 
+             * shoot
+             * 
+             * add to Velocity gravity
+             * add to Velocity: move forces
+             * move by velocity
+             * 
+             * Shields and collisions
+             * 
+             * scan
+             * 
+             * spawn new ships ( so that they are not instantly on another radar)
+             * 
+             */
 
-            return new List<shipData>();
-        }
 
-        public override void Simulate(List<PlayerCommand> input = null)
-        {
             if (input != null)
             {
                 // handle user ticks here
@@ -87,6 +98,8 @@ namespace CodeVerse.Logic.Simulation
 
             foreach (var item in CollidedMovables)
                 entities.Remove(item);
+
+            return new List<shipData>();
         }
 
         private void ApplyWorldForces(MovingEntity unit)
