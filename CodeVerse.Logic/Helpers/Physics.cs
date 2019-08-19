@@ -16,7 +16,7 @@ namespace CodeVerse.Common
         {
             var collisions = new List<Entity>();
 
-            foreach (var item in others.Where(q => q != e).Select(q => q))
+            foreach (var item in others.Where(q => q != e))
             {
                 if (e.CollidesWith(item))
                 {

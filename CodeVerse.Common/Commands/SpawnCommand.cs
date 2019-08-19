@@ -4,10 +4,7 @@ using System.Text;
 
 namespace CodeVerse.Common.Commands
 {
-    public class PlayerCommand
+    public class SpawnCommand : PlayerCommand
     {
-        public Guid UniverseID;
-        public Guid playerID;
-        public Guid shipID;
     }
 }

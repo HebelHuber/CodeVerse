@@ -2,9 +2,9 @@
 
 namespace CodeVerse.Common
 {
-    public abstract class Entity
+    public class Entity
     {
-        public long ID;
+        public Guid ID;
         public string name;
         public float radius;
         public float mass;

@@ -1,12 +1,15 @@
-﻿namespace CodeVerse.Common
+﻿using System;
+
+namespace CodeVerse.Common
 {
     public class Ship : MovingEntity
     {
-        public string Owner;
+        public Guid Owner;
         public float HP;
         public float Energy;
+        public bool shield = false;
 
-        public Ship(long ID, string name, string owner, float hP, float energy, Vector pos, Vector velocity, float mass = 0f, float radius = 5f)
+        public Ship(Guid ID, string name, Guid owner, float hP, float energy, Vector pos, Vector velocity, float mass = 0f, float radius = 5f)
         {
             this.ID = ID;
             this.name = name;
@@ -27,7 +30,7 @@
 
         public Ship() { }
 
-        public static Ship Random(long ID, string owner, string name, float maxMapSize)
+        public static Ship Random(Guid ID, Guid owner, string name, float maxMapSize)
         {
             var newObj = new Ship();
             newObj.ID = ID;
