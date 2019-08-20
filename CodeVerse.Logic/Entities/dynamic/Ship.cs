@@ -1,6 +1,7 @@
 ﻿using System;
+using CodeVerse.Common;
 
-namespace CodeVerse.Common
+namespace CodeVerse.Logic.Entities
 {
     public class Ship : MovingEntity
     {

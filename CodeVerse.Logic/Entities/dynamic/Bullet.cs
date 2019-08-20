@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CodeVerse.Common;
 
-namespace CodeVerse.Common
+namespace CodeVerse.Logic.Entities
 {
     public class Bullet : MovingEntity
     {

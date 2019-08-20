@@ -1,6 +1,7 @@
-﻿using System;
+﻿using CodeVerse.Common;
+using System;
 
-namespace CodeVerse.Common
+namespace CodeVerse.Logic.Entities
 {
     public class Entity
     {

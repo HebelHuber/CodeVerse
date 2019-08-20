@@ -11,6 +11,7 @@ using Gorgon.UI;
 using Gorgon.Timing;
 using CodeVerse.Logic;
 using CodeVerse.Common;
+using CodeVerse.Logic.Entities;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,34 +34,11 @@ namespace CodeVerse.LogicTester.Gorgon
             var form = new Form1();
             Initialize(form);
 
-            var scanner = new Ship(new Guid(), "bob", new Guid(), 100, 100, Vector.Zero, Vector.Zero);
-
-            int count = 8;
-            float piepiecesize = 360f / count;
-
-            for (int i = 0; i < count; i++)
-            {
-                float angle = i * piepiecesize;
-
-                var sunPos = Vector.FromAngleLength(angle, 100);
-                var tempE = new Sun("sun" + i, 50, sunPos, 0);
-
-                //Console.WriteLine(string.Format("angle in:{0} - vec: {1} - angle out:{2}", angle, sunPos, sunPos.Angle));
-
-                var scanHit = tempE.isInsideScanArc(scanner, 0, 90, 100, true);
-                Console.WriteLine(tempE.name + ": pos: " + tempE.pos + " angle: " + angle +
-                    "\n" + scanner.name + ": pos: " + scanner.pos +
-                    "\n Distance: " + Physics.Distance(tempE, scanner) +
-                    "\n Scanhit: " + scanHit);
-                Console.WriteLine("");
-            }
-
-            Thread.Sleep(-1);
-
             screenMin = Math.Min(form.ClientSize.Height, form.ClientSize.Width); // muss der drawer nachher wissen
 
             mapsize = 2000f; // muss der drawer nachher wissen
-            var map = new Logic.Maps.RandomMap(mapsize);
+            var map = new Logic.Maps.ScanTest(mapsize);
+            //var map = new Logic.Maps.RandomMap(mapsize);
             //var map = new Logic.Maps.CenterSun(mapsize);
             //var map = new Logic.Maps.FourSuns(mapsize);
             universe = new Universe(new Guid(), new Logic.Simulation.DefaultSimulator(), map);

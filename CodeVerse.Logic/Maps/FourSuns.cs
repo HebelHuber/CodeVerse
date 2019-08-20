@@ -1,4 +1,5 @@
 ﻿using CodeVerse.Common;
+using CodeVerse.Logic.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -1,6 +1,7 @@
 ﻿using CodeVerse.Common;
 using CodeVerse.Common.Commands;
 using CodeVerse.Common.data;
+using CodeVerse.Logic.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;

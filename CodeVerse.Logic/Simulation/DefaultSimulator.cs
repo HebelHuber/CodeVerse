@@ -5,6 +5,7 @@ using System.Text;
 using CodeVerse.Common;
 using CodeVerse.Common.Commands;
 using CodeVerse.Common.data;
+using CodeVerse.Logic.Entities;
 
 namespace CodeVerse.Logic.Simulation
 {
