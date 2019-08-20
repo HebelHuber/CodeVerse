@@ -6,5 +6,8 @@ namespace CodeVerse.Common.Commands
 {
     public class ScanCommand : PlayerCommand
     {
+        public float LeftAngle;
+        public float RightAngle;
+        public float Range;
     }
 }

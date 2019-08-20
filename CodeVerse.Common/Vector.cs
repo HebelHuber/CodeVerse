@@ -44,7 +44,9 @@ namespace CodeVerse.Common
         {
             get
             {
-                return DirectionFromVector(this);
+                var angle = RadToDeg(Math.Atan2(Normalized.X, Normalized.Y)) - 90f;
+                if (angle < 0) angle += 360;
+                return angle;
             }
         }
 
@@ -70,7 +72,7 @@ namespace CodeVerse.Common
 
         public static Vector VecFromTo(Vector a, Vector b)
         {
-            return new Vector(a.X - b.X, a.Y - b.Y);
+            return b - a;
         }
 
         public override string ToString() { return "[" + X.ToFixedLengthString(5) + "|" + Y.ToFixedLengthString(5) + "]"; }
@@ -168,24 +170,10 @@ namespace CodeVerse.Common
         #endregion
 
         #region Helpers
-        private static float DirectionFromVector(Vector v)
-        {
-            return DirectionFromVector(v.X, v.X);
-        }
-        private static float DirectionFromVector(float aX, float aY, float bX = 1, float bY = 0)
-        {
-            double sin = aX * bY - bX * aY;
-            double cos = aX * bX + aY * bY;
-
-            float angleDeg = RadToDeg(Math.Atan2(sin, cos));
-
-            return angleDeg;
-        }
-
         private static Vector AngleToVector(float angle)
         {
             float radians = DegToRad(angle);
-            return new Vector(Cos(radians), Sin(radians));
+            return new Vector(Cos(radians), -Sin(radians));
         }
 
         private static float Cos(float inVal)

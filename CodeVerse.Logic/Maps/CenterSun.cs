@@ -26,7 +26,7 @@ namespace CodeVerse.Logic.Maps
             for (int i = 0; i < 10; i++)
             {
                 var shipPos = new Vector(center.X - (sun.radius * dist), center.Y);
-                entities.Add(new Ship(i, dist.ToString(), "Lukas", 100, 100, shipPos, new Vector(0, (dist * 0.5f))));
+                entities.Add(new Ship(new Guid(), dist.ToString(), new Guid(), 100, 100, shipPos, new Vector(0, (dist * 0.5f)))); ;
                 dist += 0.5f;
             }
 

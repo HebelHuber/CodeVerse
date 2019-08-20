@@ -106,19 +106,21 @@ namespace CodeVerse.Logic.Simulation
                         {
                             var shipdata = ShipToData(scanningShip);
 
-                            var TempScanCircle = new Entity()
+                            foreach (var other in entities.Where(q => q != scanningShip))
                             {
-                                radius = 150f,
-                                pos = scanningShip.pos
-                            };
-
-                            var collisions = TempScanCircle.CollidesWithMultiple(entities);
-
-                            foreach (var coll in collisions)
-                            {
-                                shipdata.userData.ScanContent.Add(
-                                    EntityToRadarBlip(scanningShip, coll)
+                                var scanHit = other.isInsideScanArc(
+                                    scanningShip,
+                                    order.LeftAngle,
+                                    order.RightAngle,
+                                    order.Range
                                     );
+
+                                if (scanHit)
+                                {
+                                    shipdata.userData.ScanContent.Add(
+                                        EntityToRadarBlip(scanningShip, other)
+                                        );
+                                }
                             }
 
                             outlist.Add(shipdata);
@@ -141,7 +143,7 @@ namespace CodeVerse.Logic.Simulation
             var blipper = new RadarBlip();
             blipper.size = scannedEntity.radius;
             blipper.mass = scannedEntity.mass;
-            blipper.pos = scanningShip.pos - scannedEntity.pos;
+            blipper.pos = scanningShip.pos - scannedEntity.pos; // convert pos to relative
 
             if (scannedEntity is Sun)
                 blipper.kind = BlipType.Sun;
