@@ -109,11 +109,11 @@ namespace CodeVerse.LogicTester.Gorgon
         private static void DrawScan(Scan scan, GorgonColor fillclr, GorgonColor lineclr)
         {
             // have to calulcate size fo the Arcs bounding box first and use that as rect
+            var rect = RectFromCenterAndRadius(scan.pos, scan.range);
+            //var rect = new DX.RectangleF(scan.pos.X * displayFactor, scan.pos.Y * displayFactor, scan.range * displayFactor, scan.range * displayFactor);
 
-            var rect = new DX.RectangleF(scan.pos.X * displayFactor, scan.pos.Y * displayFactor, scan.range * displayFactor, scan.range * displayFactor);
-
-            _renderer.DrawFilledArc(rect, fillclr, scan.leftEdgeAngle, scan.rightEdgeAngle);
-            _renderer.DrawArc(rect, lineclr, scan.leftEdgeAngle, scan.rightEdgeAngle);
+            _renderer.DrawFilledArc(rect, fillclr, scan.leftEdgeAngle + 90, scan.rightEdgeAngle + 90);
+            _renderer.DrawArc(rect, lineclr, scan.leftEdgeAngle + 90, scan.rightEdgeAngle + 90);
 
             var screenVecLeftEnd = scan.pos + Vector.FromAngleLength(scan.leftEdgeAngle, scan.range);
             var screenVecRightEnd = scan.pos + Vector.FromAngleLength(scan.rightEdgeAngle, scan.range);

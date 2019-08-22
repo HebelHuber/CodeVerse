@@ -24,9 +24,9 @@ namespace CodeVerse.Logic.Maps
 
             var scan = new Scan();
             scan.pos = scanner.pos;
-            scan.range = 100f;
+            scan.range = 320f;
             scan.leftEdgeAngle = 0;
-            scan.rightEdgeAngle = 100f;
+            scan.rightEdgeAngle = 127f;
             scan.name = "SCAN";
             entities.Add(scan);
 
@@ -37,17 +37,29 @@ namespace CodeVerse.Logic.Maps
             {
                 float angle = i * piepiecesize;
 
-                var sunPos = scanner.pos + Vector.FromAngleLength(angle, 350);
+                var sunPos = scanner.pos + Vector.FromAngleLength(angle - 5, 350);
                 var tempE = new Sun("sun" + i, 50, sunPos, mass: 0);
 
                 entities.Add(tempE);
 
-                var scanHit = tempE.isInsideScanArc(scanner, 0, 90, 100, true);
-                Console.WriteLine(tempE.name + ": pos: " + tempE.pos + " angle: " + angle +
-                    "\n" + scanner.name + ": pos: " + scanner.pos +
-                    "\n Distance: " + Physics.Distance(tempE, scanner) +
-                    "\n Scanhit: " + scanHit);
-                Console.WriteLine("");
+                var scanHit = tempE.isInsideScanArc(scanner, scan.leftEdgeAngle, scan.rightEdgeAngle, scan.range);
+                Console.WriteLine(tempE.name + ": scanned: " + scanHit);
+            }
+
+            count = 12;
+            piepiecesize = 360f / count;
+
+            for (int i = 0; i < count; i++)
+            {
+                float angle = i * piepiecesize;
+
+                var sunPos = scanner.pos + Vector.FromAngleLength(angle, 150);
+                var tempE = new Sun("sun_s" + i, 25, sunPos, mass: 0);
+
+                entities.Add(tempE);
+
+                var scanHit = tempE.isInsideScanArc(scanner, scan.leftEdgeAngle, scan.rightEdgeAngle, scan.range);
+                Console.WriteLine(tempE.name + ": scanned: " + scanHit);
             }
 
             return entities;

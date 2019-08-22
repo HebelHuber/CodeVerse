@@ -87,7 +87,7 @@ namespace CodeVerse.Common
                 }
             }
 
-            Console.WriteLine(string.Format("not between angles: left:{0} right:{1} target:{2}", leftEdgeAngle, rightEdgeAngle, targetAngle));
+            //Console.WriteLine(string.Format("not between angles: left:{0} right:{1} target:{2}", leftEdgeAngle, rightEdgeAngle, targetAngle));
 
             // catch the circles intersecting with the edges
             var leftEdgeEndpoint = scanner.pos + Vector.FromAngleLength(leftEdgeAngle, ScanRange);
@@ -231,20 +231,32 @@ namespace CodeVerse.Common
             else if (det == 0)
             {
                 // One solution.
-                //t = -B / (2 * A);
-                //intersection1 = new Vector(point1.X + t * dx, point1.Y + t * dy);
+                //var intersection1 = new Vector(point1.X + t * dx, point1.Y + t * dy);
                 //intersection2 = new Vector(float.NaN, float.NaN);
-                return true;
+
+                t = -B / (2 * A);
+
+                if (t >= 0 && t <= 1)
+                    return true;
             }
             else
             {
                 // Two solutions.
-                //t = (float)((-B + Math.Sqrt(det)) / (2 * A));
+                t = (float)((-B + Math.Sqrt(det)) / (2 * A));
+
+                if (t >= 0 && t <= 1)
+                    return true;
+
+                t = (float)((-B - Math.Sqrt(det)) / (2 * A));
+
+                if (t >= 0 && t <= 1)
+                    return true;
+
                 //intersection1 = new Vector(point1.X + t * dx, point1.Y + t * dy);
-                //t = (float)((-B - Math.Sqrt(det)) / (2 * A));
                 //intersection2 = new Vector(point1.X + t * dx, point1.Y + t * dy);
-                return true;
             }
+
+            return false;
         }
     }
 }
