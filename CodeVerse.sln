@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.Common", "CodeVer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.Logic", "CodeVerse.Logic\CodeVerse.Logic.csproj", "{6A806B3D-B9AB-45D5-A7CA-3DC758DBAAEC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.Networking", "CodeVerse.Networking\CodeVerse.Networking.csproj", "{E13642E5-8F8D-4C2E-BC47-D90B58247B63}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeVerse.Server", "CodeVerse.Server\CodeVerse.Server.csproj", "{0BFC6320-12C7-4A0C-A3AB-6AED443C5A19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeVerse.LogicTester.Gorgon", "CodeVerse.LogicTester.Gorgon\CodeVerse.LogicTester.Gorgon.csproj", "{C858DE88-34EC-4316-9F73-6E2D4689B7BD}"
@@ -27,10 +25,6 @@ Global
 		{6A806B3D-B9AB-45D5-A7CA-3DC758DBAAEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A806B3D-B9AB-45D5-A7CA-3DC758DBAAEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A806B3D-B9AB-45D5-A7CA-3DC758DBAAEC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E13642E5-8F8D-4C2E-BC47-D90B58247B63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E13642E5-8F8D-4C2E-BC47-D90B58247B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E13642E5-8F8D-4C2E-BC47-D90B58247B63}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E13642E5-8F8D-4C2E-BC47-D90B58247B63}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0BFC6320-12C7-4A0C-A3AB-6AED443C5A19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0BFC6320-12C7-4A0C-A3AB-6AED443C5A19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BFC6320-12C7-4A0C-A3AB-6AED443C5A19}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -8,7 +8,6 @@
   <ItemGroup>
     <ProjectReference Include="..\CodeVerse.Common\CodeVerse.Common.csproj" />
     <ProjectReference Include="..\CodeVerse.Logic\CodeVerse.Logic.csproj" />
-    <ProjectReference Include="..\CodeVerse.Networking\CodeVerse.Networking.csproj" />
   </ItemGroup>
 
 </Project>
