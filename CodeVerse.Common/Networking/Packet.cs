@@ -1,26 +1,25 @@
 ﻿using System.IO;
 
-namespace CodeVerse.Server.Networking
+namespace CodeVerse.Common.Networking
 {
     public class Packet
     {
         public byte[] Data { get; private set; }
 
-        ushort dataLength;
+        public ushort DataLength { get; private set; }
 
         public Packet(byte[] data)
         {
-            dataLength = (ushort)data.Length;
+            DataLength = (ushort)data.Length;
             Data = data;
         }
-
         public byte[] Serialize()
         {
             using (MemoryStream _ms = new MemoryStream())
             {
                 using (BinaryWriter _writer = new BinaryWriter(_ms))
                 {
-                    _writer.Write(dataLength);
+                    _writer.Write(DataLength);
                     _writer.Write(Data);
                     return ((MemoryStream)_writer.BaseStream).ToArray();
                 }

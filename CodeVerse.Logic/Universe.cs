@@ -1,13 +1,14 @@
-﻿using System;
+﻿using CodeVerse.Common;
+using CodeVerse.Common.Commands;
+using CodeVerse.Common.data;
+using CodeVerse.Common.Networking;
+using CodeVerse.Logic.Maps;
+using CodeVerse.Logic.Simulation;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using CodeVerse.Common;
-using CodeVerse.Common.Commands;
-using CodeVerse.Common.data;
-using CodeVerse.Logic.Maps;
-using CodeVerse.Logic.Simulation;
 
 namespace CodeVerse.Logic
 {
@@ -15,6 +16,7 @@ namespace CodeVerse.Logic
     {
         public Simulator _sim;
         public Guid _guid;
+        ConcurrentDictionary<Guid, Player> Players = new ConcurrentDictionary<Guid, Player>();
 
         public List<Entity> entities
         {
@@ -42,6 +44,16 @@ namespace CodeVerse.Logic
                 _sim = sim;
 
             _sim.SetMap(mapgen.Generate());
+        }
+
+        public void AddPlayer(Player player)
+        {
+            // Only add player he is not allready in universe
+            if (!Players.ContainsKey(player.Guid))
+            {
+                // TODO: Send some notification that a new player joined
+                Players[player.Guid] = player;
+            }
         }
 
         public List<shipData> Simulate(List<PlayerCommand> input = null)

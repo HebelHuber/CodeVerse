@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace CodeVerse.Server.Networking
+namespace CodeVerse.Common.Networking
 {
     static class SocketExtensions
     {

@@ -1,12 +1,17 @@
-﻿using System;
+﻿using CodeVerse.Common.Networking;
+using CodeVerse.Logic;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
-namespace CodeVerse.Server.Networking
+namespace CodeVerse.Server
 {
-    public static class Server
+    public static class Networking
     {
         public static event Action<Player> PlayerConnected;
+
+        static List<Universe> Universes { get; } = new List<Universe>();
 
         static TcpListener listener;
 
@@ -31,7 +36,6 @@ namespace CodeVerse.Server.Networking
         static void AcceptClient(IAsyncResult ar)
         {
             var _client = listener.EndAcceptTcpClient(ar);
-            _client.NoDelay = true;
             PlayerConnected?.Invoke(new Player(_client));
             Console.WriteLine($" >> {_client.Client.RemoteEndPoint} connected!");
             listener.BeginAcceptTcpClient(AcceptClient, null);
