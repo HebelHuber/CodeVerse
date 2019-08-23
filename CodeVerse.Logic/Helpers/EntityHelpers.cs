@@ -1,4 +1,5 @@
 ﻿using CodeVerse.Common.Commands;
+using CodeVerse.Common.data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace CodeVerse.Common
 {
-    public static class EntityFilters
+    public static class EntityHelpers
     {
         public static List<T> Casted<T, S>(this List<S> list) where T : class
         {

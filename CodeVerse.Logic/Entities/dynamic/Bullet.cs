@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CodeVerse.Common;
 
-namespace CodeVerse.Common
+namespace CodeVerse.Logic.Entities
 {
     public class Bullet : MovingEntity
     {
-        public long originID;
+        public Guid originID;
 
         public Bullet() { }
 
-        public Bullet(string name, long originID, Vector pos, Vector vel, float mass = 0f)
+        public Bullet(string name, Guid originID, Vector pos, Vector vel, float mass = 0f)
         {
             this.name = name;
             this.originID = originID;
@@ -24,7 +25,7 @@ namespace CodeVerse.Common
                 this.mass = mass;
         }
 
-        public static Bullet Random(long originID, float mapsize)
+        public static Bullet Random(Guid originID, float mapsize)
         {
             var bullet = new Bullet();
             bullet.name = "Bullet_0";

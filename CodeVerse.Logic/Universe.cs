@@ -6,6 +6,7 @@ using System.Text;
 using CodeVerse.Common;
 using CodeVerse.Common.Commands;
 using CodeVerse.Common.data;
+using CodeVerse.Logic.Entities;
 using CodeVerse.Logic.Maps;
 using CodeVerse.Logic.Simulation;
 
@@ -49,8 +50,7 @@ namespace CodeVerse.Logic
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            _sim.Simulate(input.Where(q => !(q is ScanCommand)).ToList());
-            var result = _sim.Scan(input.Where(q => q is ScanCommand).ToList());
+            var result = _sim.Simulate(input);
 
             stopwatch.Stop();
 

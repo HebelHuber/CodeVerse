@@ -11,6 +11,7 @@ using Gorgon.UI;
 using Gorgon.Timing;
 using CodeVerse.Logic;
 using CodeVerse.Common;
+using CodeVerse.Logic.Entities;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,7 +37,8 @@ namespace CodeVerse.LogicTester.Gorgon
             screenMin = Math.Min(form.ClientSize.Height, form.ClientSize.Width); // muss der drawer nachher wissen
 
             mapsize = 2000f; // muss der drawer nachher wissen
-            var map = new Logic.Maps.RandomMap(mapsize);
+            var map = new Logic.Maps.ScanTest(mapsize);
+            //var map = new Logic.Maps.RandomMap(mapsize);
             //var map = new Logic.Maps.CenterSun(mapsize);
             //var map = new Logic.Maps.FourSuns(mapsize);
             universe = new Universe(new Guid(), new Logic.Simulation.DefaultSimulator(), map);

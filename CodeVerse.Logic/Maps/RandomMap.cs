@@ -1,4 +1,5 @@
 ﻿using CodeVerse.Common;
+using CodeVerse.Logic.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,7 +72,7 @@ namespace CodeVerse.Logic.Maps
             int ShipCount = StaticRandom.randomInt(5 * entitycountmult, 20 * entitycountmult);
             for (int i = 0; i < ShipCount; i++)
             {
-                var ship = Ship.Random(i, "Bob", "Ship_" + i, mapsize);
+                var ship = Ship.Random(new Guid(), new Guid(), "Ship_" + i, mapsize);
                 while (ship.CollidesWithMultiple(entities).Count != 0)
                 {
                     ship.pos = StaticRandom.RandomVecInSquare(ship.radius, mapsize - ship.radius);

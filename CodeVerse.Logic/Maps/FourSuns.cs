@@ -1,4 +1,5 @@
 ﻿using CodeVerse.Common;
+using CodeVerse.Logic.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,7 +29,7 @@ namespace CodeVerse.Logic.Maps
             entities.Add(new Sun("Sun_100", 100f, new Vector(rightX, lowerY)));
 
             Vector spawnpoint = new Vector((mapsize / 4f) * 2f, (mapsize / 4f) * 3f);
-            entities.Add(new Ship(0, "Bob", "Lukas", 100, 100, spawnpoint, Vector.FromAngleLength(45, 3)));
+            entities.Add(new Ship(new Guid(), "Bob", new Guid(), 100, 100, spawnpoint, Vector.FromAngleLength(45, 3)));
 
             return entities;
         }

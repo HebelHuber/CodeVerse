@@ -1,4 +1,7 @@
-﻿namespace CodeVerse.Common
+﻿
+using CodeVerse.Common;
+
+namespace CodeVerse.Logic.Entities
 {
     public class Planet : StaticEntity
     {

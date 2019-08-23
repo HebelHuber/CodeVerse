@@ -1,10 +1,11 @@
-﻿using System;
+﻿using CodeVerse.Common;
+using System;
 
-namespace CodeVerse.Common
+namespace CodeVerse.Logic.Entities
 {
-    public abstract class Entity
+    public class Entity
     {
-        public long ID;
+        public Guid ID;
         public string name;
         public float radius;
         public float mass;

@@ -1,6 +1,7 @@
 ﻿using CodeVerse.Common;
 using CodeVerse.Common.Commands;
 using CodeVerse.Common.data;
+using CodeVerse.Logic.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,7 +17,6 @@ namespace CodeVerse.Logic.Simulation
             entities = map;
         }
 
-        public abstract void Simulate(List<PlayerCommand> input = null);
-        public abstract List<shipData> Scan(List<PlayerCommand> input = null);
+        public abstract List<shipData> Simulate(List<PlayerCommand> input = null);
     }
 }

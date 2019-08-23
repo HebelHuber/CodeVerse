@@ -12,6 +12,7 @@ using Gorgon.Timing;
 using CodeVerse.Common;
 using System.Linq;
 using Gorgon.Graphics.Fonts;
+using CodeVerse.Logic.Entities;
 
 namespace CodeVerse.LogicTester.Gorgon
 {
@@ -58,6 +59,11 @@ namespace CodeVerse.LogicTester.Gorgon
                     if (DrawHistoryLines) DrawHistory(bullet, GorgonColor.Orange);
                     DrawFilledCircle(bullet.pos, bullet.radius, GorgonColor.Black, GorgonColor.Orange);
                 }
+                else if (mapitem is Scan)
+                {
+                    var scan = (Scan)mapitem;
+                    DrawScan(scan, GorgonColor.Aquamarine, GorgonColor.Black);
+                }
             }
         }
 
@@ -92,15 +98,31 @@ namespace CodeVerse.LogicTester.Gorgon
             if (msg != "")
             {
                 _renderer.DrawString(
-                              msg,
-                              new DX.Vector2(pos.X * displayFactor, pos.Y * displayFactor),
-                              _font,
-                              GorgonColor.Black
-                              );
+                    msg,
+                    new DX.Vector2(pos.X * displayFactor, pos.Y * displayFactor),
+                    _font,
+                    GorgonColor.Black
+                );
             }
         }
 
-        private static void DrawHistory(MovingEntity e, GorgonColor clr, int length = 10)
+        private static void DrawScan(Scan scan, GorgonColor fillclr, GorgonColor lineclr)
+        {
+            // have to calulcate size fo the Arcs bounding box first and use that as rect
+            var rect = RectFromCenterAndRadius(scan.pos, scan.range);
+            //var rect = new DX.RectangleF(scan.pos.X * displayFactor, scan.pos.Y * displayFactor, scan.range * displayFactor, scan.range * displayFactor);
+
+            _renderer.DrawFilledArc(rect, fillclr, scan.leftEdgeAngle + 90, scan.rightEdgeAngle + 90);
+            _renderer.DrawArc(rect, lineclr, scan.leftEdgeAngle + 90, scan.rightEdgeAngle + 90);
+
+            var screenVecLeftEnd = scan.pos + Vector.FromAngleLength(scan.leftEdgeAngle, scan.range);
+            var screenVecRightEnd = scan.pos + Vector.FromAngleLength(scan.rightEdgeAngle, scan.range);
+            DrawVector(scan.pos, screenVecLeftEnd, lineclr);
+            DrawVector(scan.pos, screenVecRightEnd, lineclr);
+
+        }
+
+        private static void DrawHistory(MovingEntity e, GorgonColor clr)
         {
             if (e.PositionHistory.Count == 0)
                 return;
@@ -111,13 +133,6 @@ namespace CodeVerse.LogicTester.Gorgon
             {
                 DrawVector(e.PositionHistory[i], e.PositionHistory[i + 1], clr);
             }
-
-            //for (int i = 0; i < length; i++)
-            //{
-            //    if (i < e.PositionHistory.Count - 1)
-            //        DrawVector(g, e.PositionHistory[i], e.PositionHistory[i + 1], clr);
-            //    else break;
-            //}
         }
     }
 }
