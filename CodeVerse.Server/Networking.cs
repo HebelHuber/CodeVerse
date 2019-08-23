@@ -1,7 +1,5 @@
 ﻿using CodeVerse.Common.Networking;
-using CodeVerse.Logic;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
@@ -10,8 +8,6 @@ namespace CodeVerse.Server
     public static class Networking
     {
         public static event Action<Player> PlayerConnected;
-
-        static List<Universe> Universes { get; } = new List<Universe>();
 
         static TcpListener listener;
 

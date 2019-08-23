@@ -1,12 +1,15 @@
 ﻿using CodeVerse.Common.Networking;
+using CodeVerse.Logic;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace CodeVerse.Server
 {
-    class Program
+    class Server
     {
+        static List<Universe> Universes { get; } = new List<Universe>();
         // This is not thread safe when modifying a Player object
         static ConcurrentBag<Player> players = new ConcurrentBag<Player>();
 
